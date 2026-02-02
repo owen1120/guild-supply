@@ -1,5 +1,3 @@
-// src/types/inventory.ts
-
 export type Rarity = 'N' | 'R' | 'SR' | 'SSR' | 'UR';
 export type StockStatus = 'IN_STOCK' | 'OUT_OF_STOCK' | 'PRE_ORDER';
 export type DiscountType = 'PERCENTAGE' | 'FIXED_AMOUNT';

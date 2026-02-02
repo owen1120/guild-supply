@@ -84,19 +84,19 @@
             "images": [
             {
                 "id": "img_001_01",
-                "url": "https://cdn.guildsupply.com/products/prod_001_front.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_001_A_JKT_01.webp",
                 "is_primary": true,
                 "alt_text": "Wilderness Pioneer Jacket - Front View"
             },
             {
                 "id": "img_001_02",
-                "url": "https://cdn.guildsupply.com/products/prod_001_detail_pocket.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_001_A_JKT_02.webp",
                 "is_primary": false,
                 "alt_text": "Bellows Pocket Detail"
             },
             {
                 "id": "img_001_03",
-                "url": "https://cdn.guildsupply.com/products/prod_001_back.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_001_A_JKT_03.webp",
                 "is_primary": false,
                 "alt_text": "Back View"
             }
@@ -194,19 +194,19 @@
             "images": [
             {
                 "id": "img_002_01",
-                "url": "https://cdn.guildsupply.com/products/prod_002_side.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_002_C_RUN_01.webp",
                 "is_primary": true,
                 "alt_text": "Zephyr-7 Trail Runner - Neon Yellow Side View"
             },
             {
                 "id": "img_002_02",
-                "url": "https://cdn.guildsupply.com/products/prod_002_sole.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_002_C_RUN_02.webp",
                 "is_primary": false,
                 "alt_text": "Aggressive Lug Pattern Detail"
             },
             {
                 "id": "img_002_03",
-                "url": "https://cdn.guildsupply.com/products/prod_002_action.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_002_C_RUN_03.webp",
                 "is_primary": false,
                 "alt_text": "Action Shot on Trail"
             }
@@ -304,30 +304,24 @@
             "images": [
             {
                 "id": "img_003_01",
-                "url": "https://cdn.guildsupply.com/products/prod_003_hero.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_003_D_BAG_01.webp",
                 "is_primary": true,
                 "alt_text": "Terraframe 65 Titan - Deep Earth Color"
             },
             {
                 "id": "img_003_02",
-                "url": "https://cdn.guildsupply.com/products/prod_003_overload.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_003_D_BAG_02.webp",
                 "is_primary": false,
                 "alt_text": "Overload Shelf Deployment Mode"
             },
             {
                 "id": "img_003_03",
-                "url": "https://cdn.guildsupply.com/products/prod_003_yoke.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_003_D_BAG_03.webp",
                 "is_primary": false,
                 "alt_text": "Adjustable Yoke Detail"
             }
             ],
-            "videos": [
-            {
-                "id": "vid_003_01",
-                "url": "https://cdn.guildsupply.com/products/prod_003_demo.mp4",
-                "thumbnail_url": "https://cdn.guildsupply.com/products/prod_003_vid_thumb.jpg"
-            }
-            ]
+            "videos": []
         },
 
         "seo": {
@@ -415,19 +409,19 @@
             "images": [
             {
                 "id": "img_004_01",
-                "url": "https://cdn.guildsupply.com/products/prod_004_red.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_004_E_TNT_01.webp",
                 "is_primary": true,
                 "alt_text": "Hilleberg Jannu - Signature Red"
             },
             {
                 "id": "img_004_02",
-                "url": "https://cdn.guildsupply.com/products/prod_004_interior.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_004_E_TNT_02.webp",
                 "is_primary": false,
                 "alt_text": "Interior Layout (2 Person)"
             },
             {
                 "id": "img_004_03",
-                "url": "https://cdn.guildsupply.com/products/prod_004_snow.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_004_E_TNT_03.webp",
                 "is_primary": false,
                 "alt_text": "Field Test in Heavy Snow"
             }
@@ -520,19 +514,19 @@
             "images": [
             {
                 "id": "img_005_01",
-                "url": "https://cdn.guildsupply.com/products/prod_005_on.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_005_E_LMP_01.webp",
                 "is_primary": true,
                 "alt_text": "Goal Zero Micro Flash - Lantern Mode Active"
             },
             {
                 "id": "img_005_02",
-                "url": "https://cdn.guildsupply.com/products/prod_005_hand.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_005_E_LMP_02.webp",
                 "is_primary": false,
                 "alt_text": "Size Reference in Hand"
             },
             {
                 "id": "img_005_03",
-                "url": "https://cdn.guildsupply.com/products/prod_005_camp.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_005_E_LMP_03.webp",
                 "is_primary": false,
                 "alt_text": "Illuminating Tent at Night"
             }
@@ -625,19 +619,19 @@
             "images": [
             {
                 "id": "img_006_01",
-                "url": "https://cdn.guildsupply.com/products/prod_006_flame.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_006_E_FIR_01.webp",
                 "is_primary": true,
                 "alt_text": "SOTO WindMaster - Active Flame"
             },
             {
                 "id": "img_006_02",
-                "url": "https://cdn.guildsupply.com/products/prod_006_folded.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_006_E_FIR_02.webp",
                 "is_primary": false,
                 "alt_text": "Compact Storage Mode"
             },
             {
                 "id": "img_006_03",
-                "url": "https://cdn.guildsupply.com/products/prod_006_cooking.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_006_E_FIR_03.webp",
                 "is_primary": false,
                 "alt_text": "Cooking in Windy Conditions"
             }
@@ -730,19 +724,19 @@
             "images": [
             {
                 "id": "img_007_01",
-                "url": "https://cdn.guildsupply.com/products/prod_007_set.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_007_E_CKW_01.webp",
                 "is_primary": true,
                 "alt_text": "Snow Peak Trek 900 Set"
             },
             {
                 "id": "img_007_02",
-                "url": "https://cdn.guildsupply.com/products/prod_007_stack.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_007_E_CKW_02.webp",
                 "is_primary": false,
                 "alt_text": "Stacking Example with Canister"
             },
             {
                 "id": "img_007_03",
-                "url": "https://cdn.guildsupply.com/products/prod_007_cooking.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_007_E_CKW_03.webp",
                 "is_primary": false,
                 "alt_text": "Cooking on Campfire"
             }
@@ -835,19 +829,19 @@
             "images": [
             {
                 "id": "img_008_01",
-                "url": "https://cdn.guildsupply.com/products/prod_008_iso.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_008_E_FUR_01.webp",
                 "is_primary": true,
                 "alt_text": "Helinox Chair Zero - Black"
             },
             {
                 "id": "img_008_02",
-                "url": "https://cdn.guildsupply.com/products/prod_008_packed.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_008_E_FUR_02.webp",
                 "is_primary": false,
                 "alt_text": "Packed Size Comparison"
             },
             {
                 "id": "img_008_03",
-                "url": "https://cdn.guildsupply.com/products/prod_008_camp.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_008_E_FUR_03.webp",
                 "is_primary": false,
                 "alt_text": "Resting at Summit"
             }
@@ -945,19 +939,19 @@
             "images": [
             {
                 "id": "img_009_01",
-                "url": "https://cdn.guildsupply.com/products/prod_009_front.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_009_A_BAS_01.webp",
                 "is_primary": true,
                 "alt_text": "Smartwool Merino 250 - Charcoal Heather"
             },
             {
                 "id": "img_009_02",
-                "url": "https://cdn.guildsupply.com/products/prod_009_detail.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_009_A_BAS_02.webp",
                 "is_primary": false,
                 "alt_text": "Fabric Texture Detail"
             },
             {
                 "id": "img_009_03",
-                "url": "https://cdn.guildsupply.com/products/prod_009_layer.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_009_A_BAS_03.webp",
                 "is_primary": false,
                 "alt_text": "Layering Example"
             }
@@ -1055,19 +1049,19 @@
             "images": [
             {
                 "id": "img_010_01",
-                "url": "https://cdn.guildsupply.com/products/prod_010_front.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_010_B_PNT_01.webp",
                 "is_primary": true,
                 "alt_text": "Vidda Pro Trousers - Dark Olive"
             },
             {
                 "id": "img_010_02",
-                "url": "https://cdn.guildsupply.com/products/prod_010_pockets.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_010_B_PNT_02.webp",
                 "is_primary": false,
                 "alt_text": "Tactical Pocket Configuration"
             },
             {
                 "id": "img_010_03",
-                "url": "https://cdn.guildsupply.com/products/prod_010_wax.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_010_B_PNT_03.webp",
                 "is_primary": false,
                 "alt_text": "Waxing Process Demonstration"
             }
@@ -1165,21 +1159,21 @@
             "images": [
             {
                 "id": "img_011_01",
-                "url": "https://cdn.guildsupply.com/products/prod_011_red.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_011_E_SLP_01.webp",
                 "is_primary": true,
-                "alt_text": "NANGA Aurora Light 600DX - Red"
+                "alt_text": "NANGA Aurora Light 600DX - Gray"
             },
             {
                 "id": "img_011_02",
-                "url": "https://cdn.guildsupply.com/products/prod_011_texture.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_011_E_SLP_02.webp",
                 "is_primary": false,
-                "alt_text": "Aurora-Tex Fabric Detail"
+                "alt_text": "NANGA Aurora Light 600DX - Brown"
             },
             {
                 "id": "img_011_03",
-                "url": "https://cdn.guildsupply.com/products/prod_011_packed.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_011_E_SLP_03.webp",
                 "is_primary": false,
-                "alt_text": "Compression Sack Size"
+                "alt_text": "NANGA Aurora Light 600DX - Black"
             }
             ],
             "videos": []
@@ -1270,19 +1264,19 @@
             "images": [
             {
                 "id": "img_012_01",
-                "url": "https://cdn.guildsupply.com/products/prod_012_top.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_012_E_PAD_01.webp",
                 "is_primary": true,
                 "alt_text": "NeoAir XTherm NXT - Top View"
             },
             {
                 "id": "img_012_02",
-                "url": "https://cdn.guildsupply.com/products/prod_012_valve.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_012_E_PAD_02.webp",
                 "is_primary": false,
                 "alt_text": "WingLock Valve Detail"
             },
             {
                 "id": "img_012_03",
-                "url": "https://cdn.guildsupply.com/products/prod_012_pack.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_012_E_PAD_03.webp",
                 "is_primary": false,
                 "alt_text": "Packed Size Comparison"
             }
@@ -1375,19 +1369,19 @@
             "images": [
             {
                 "id": "img_013_01",
-                "url": "https://cdn.guildsupply.com/products/prod_013_blade.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_013_E_KNF_01.webp",
                 "is_primary": true,
                 "alt_text": "Morakniv Garberg BlackBlade Detail"
             },
             {
                 "id": "img_013_02",
-                "url": "https://cdn.guildsupply.com/products/prod_013_fire.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_013_E_KNF_02.webp",
                 "is_primary": false,
                 "alt_text": "Striking Sparks with Spine"
             },
             {
                 "id": "img_013_03",
-                "url": "https://cdn.guildsupply.com/products/prod_013_sheath.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_013_E_KNF_03.webp",
                 "is_primary": false,
                 "alt_text": "Leather Sheath Configuration"
             }
@@ -1480,19 +1474,19 @@
             "images": [
             {
                 "id": "img_014_01",
-                "url": "https://cdn.guildsupply.com/products/prod_014_open.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_014_E_TOL_01.webp",
                 "is_primary": true,
                 "alt_text": "Leatherman Wave+ Fully Deployed"
             },
             {
                 "id": "img_014_02",
-                "url": "https://cdn.guildsupply.com/products/prod_014_pliers.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_014_E_TOL_02.webp",
                 "is_primary": false,
                 "alt_text": "Replaceable Wire Cutters Detail"
             },
             {
                 "id": "img_014_03",
-                "url": "https://cdn.guildsupply.com/products/prod_014_hand.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_014_E_TOL_03.webp",
                 "is_primary": false,
                 "alt_text": "One-hand Opening Action"
             }
@@ -1585,19 +1579,19 @@
             "images": [
             {
                 "id": "img_015_01",
-                "url": "https://cdn.guildsupply.com/products/prod_015_main.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_015_E_WAT_01.webp",
                 "is_primary": true,
                 "alt_text": "Sawyer Squeeze Filter System"
             },
             {
                 "id": "img_015_02",
-                "url": "https://cdn.guildsupply.com/products/prod_015_drink.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_015_E_WAT_02.webp",
                 "is_primary": false,
                 "alt_text": "Drinking Directly from Stream"
             },
             {
                 "id": "img_015_03",
-                "url": "https://cdn.guildsupply.com/products/prod_015_flush.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_015_E_WAT_03.webp",
                 "is_primary": false,
                 "alt_text": "Backflushing Maintenance"
             }
@@ -1690,19 +1684,19 @@
             "images": [
             {
                 "id": "img_016_01",
-                "url": "https://cdn.guildsupply.com/products/prod_016_hero.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_016_E_TCH_01.webp",
                 "is_primary": true,
                 "alt_text": "Garmin Instinct 2X Solar Tactical - Black"
             },
             {
                 "id": "img_016_02",
-                "url": "https://cdn.guildsupply.com/products/prod_016_light.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_016_E_TCH_02.webp",
                 "is_primary": false,
                 "alt_text": "Built-in Flashlight Active"
             },
             {
                 "id": "img_016_03",
-                "url": "https://cdn.guildsupply.com/products/prod_016_solar.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_016_E_TCH_03.webp",
                 "is_primary": false,
                 "alt_text": "Solar Charging Graph Interface"
             }
@@ -1801,19 +1795,19 @@
             "images": [
             {
                 "id": "img_017_01",
-                "url": "https://cdn.guildsupply.com/products/prod_017_bag.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_017_E_MED_01.webp",
                 "is_primary": true,
                 "alt_text": "AMK Ultralight Watertight .7 Kit"
             },
             {
                 "id": "img_017_02",
-                "url": "https://cdn.guildsupply.com/products/prod_017_contents.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_017_E_MED_02.webp",
                 "is_primary": false,
                 "alt_text": "Full Medical Contents Spread"
             },
             {
                 "id": "img_017_03",
-                "url": "https://cdn.guildsupply.com/products/prod_017_dryflex.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_017_E_MED_03.webp",
                 "is_primary": false,
                 "alt_text": "Inner DryFlex Waterproof Liners"
             }
@@ -1906,19 +1900,19 @@
             "images": [
             {
                 "id": "img_018_01",
-                "url": "https://cdn.guildsupply.com/products/prod_018_pair.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_018_E_POL_01.webp",
                 "is_primary": true,
                 "alt_text": "Black Diamond Distance Carbon Z Pair"
             },
             {
                 "id": "img_018_02",
-                "url": "https://cdn.guildsupply.com/products/prod_018_folded.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_018_E_POL_02.webp",
                 "is_primary": false,
                 "alt_text": "Z-Fold Compact Mode"
             },
             {
                 "id": "img_018_03",
-                "url": "https://cdn.guildsupply.com/products/prod_018_grip.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_018_E_POL_03.webp",
                 "is_primary": false,
                 "alt_text": "EVA Foam Grip Detail"
             }
@@ -2016,19 +2010,19 @@
             "images": [
             {
                 "id": "img_019_01",
-                "url": "https://cdn.guildsupply.com/products/prod_019_pair.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_019_C_SOC_01.webp",
                 "is_primary": true,
                 "alt_text": "Darn Tough Micro Crew - Onyx"
             },
             {
                 "id": "img_019_02",
-                "url": "https://cdn.guildsupply.com/products/prod_019_detail.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_019_C_SOC_02.webp",
                 "is_primary": false,
                 "alt_text": "High Density Knitting Texture"
             },
             {
                 "id": "img_019_03",
-                "url": "https://cdn.guildsupply.com/products/prod_019_life.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_019_C_SOC_03.webp",
                 "is_primary": false,
                 "alt_text": "Lifestyle Shot on Trail"
             }
@@ -2121,19 +2115,19 @@
             "images": [
             {
                 "id": "img_020_01",
-                "url": "https://cdn.guildsupply.com/products/prod_020_hero.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_020_E_GLS_01.webp",
                 "is_primary": true,
                 "alt_text": "Oakley Sutro Lite Sweep - Matte Black"
             },
             {
                 "id": "img_020_02",
-                "url": "https://cdn.guildsupply.com/products/prod_020_lens.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_020_E_GLS_02.webp",
                 "is_primary": false,
                 "alt_text": "Prizm Trail Lens View Simulation"
             },
             {
                 "id": "img_020_03",
-                "url": "https://cdn.guildsupply.com/products/prod_020_side.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_020_E_GLS_03.webp",
                 "is_primary": false,
                 "alt_text": "Side Profile with Unobtanium Grip"
             }
@@ -2226,19 +2220,19 @@
             "images": [
             {
                 "id": "img_021_01",
-                "url": "https://cdn.guildsupply.com/products/prod_021_group.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_021_F_FOD_01.webp",
                 "is_primary": true,
                 "alt_text": "Satake Magic Rice Flavor Collection"
             },
             {
                 "id": "img_021_02",
-                "url": "https://cdn.guildsupply.com/products/prod_021_cooked.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_021_F_FOD_02.webp",
                 "is_primary": false,
                 "alt_text": "Rehydrated Curry Rice Detail"
             },
             {
                 "id": "img_021_03",
-                "url": "https://cdn.guildsupply.com/products/prod_021_step.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_021_F_FOD_03.webp",
                 "is_primary": false,
                 "alt_text": "Preparation Steps Infographic"
             }
@@ -2331,19 +2325,19 @@
             "images": [
             {
                 "id": "img_022_01",
-                "url": "https://cdn.guildsupply.com/products/prod_022_stand.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_022_E_COF_01.webp",
                 "is_primary": true,
                 "alt_text": "Porlex Mini II Grinder"
             },
             {
                 "id": "img_022_02",
-                "url": "https://cdn.guildsupply.com/products/prod_022_parts.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_022_E_COF_02.webp",
                 "is_primary": false,
                 "alt_text": "Disassembled Ceramic Burrs"
             },
             {
                 "id": "img_022_03",
-                "url": "https://cdn.guildsupply.com/products/prod_022_hand.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_022_E_COF_03.webp",
                 "is_primary": false,
                 "alt_text": "Grinding Action Shot"
             }
@@ -2441,19 +2435,19 @@
             "images": [
             {
                 "id": "img_023_01",
-                "url": "https://cdn.guildsupply.com/products/prod_023_hero.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_023_A_HAT_01.webp",
                 "is_primary": true,
                 "alt_text": "The North Face GTX Hat - Black"
             },
             {
                 "id": "img_023_02",
-                "url": "https://cdn.guildsupply.com/products/prod_023_rain.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_023_A_HAT_02.webp",
                 "is_primary": false,
                 "alt_text": "Water Beading on Gore-Tex Surface"
             },
             {
                 "id": "img_023_03",
-                "url": "https://cdn.guildsupply.com/products/prod_023_detail.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_023_A_HAT_03.webp",
                 "is_primary": false,
                 "alt_text": "Logo Embroidery Detail"
             }
@@ -2551,19 +2545,19 @@
             "images": [
             {
                 "id": "img_024_01",
-                "url": "https://cdn.guildsupply.com/products/prod_024_pair.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_024_A_GLV_01.webp",
                 "is_primary": true,
                 "alt_text": "Black Diamond ScreenTap Gloves"
             },
             {
                 "id": "img_024_02",
-                "url": "https://cdn.guildsupply.com/products/prod_024_phone.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_024_A_GLV_02.webp",
                 "is_primary": false,
                 "alt_text": "Using Smartphone with Gloves On"
             },
             {
                 "id": "img_024_03",
-                "url": "https://cdn.guildsupply.com/products/prod_024_palm.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_024_A_GLV_03.webp",
                 "is_primary": false,
                 "alt_text": "Conductive Palm Detail"
             }
@@ -2656,19 +2650,19 @@
             "images": [
             {
                 "id": "img_025_01",
-                "url": "https://cdn.guildsupply.com/products/prod_025_hero.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_025_E_PWR_01.webp",
                 "is_primary": true,
                 "alt_text": "Nitecore NB10000 Gen 2 Texture"
             },
             {
                 "id": "img_025_02",
-                "url": "https://cdn.guildsupply.com/products/prod_025_size.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_025_E_PWR_02.webp",
                 "is_primary": false,
                 "alt_text": "Size Comparison with Phone"
             },
             {
                 "id": "img_025_03",
-                "url": "https://cdn.guildsupply.com/products/prod_025_water.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_025_E_PWR_03.webp",
                 "is_primary": false,
                 "alt_text": "IPX5 Water Resistance Test"
             }
@@ -2761,19 +2755,19 @@
             "images": [
             {
                 "id": "img_026_01",
-                "url": "https://cdn.guildsupply.com/products/prod_026_colors.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_026_E_TRW_01.webp",
                 "is_primary": true,
                 "alt_text": "The Deuce #2 Color Collection"
             },
             {
                 "id": "img_026_02",
-                "url": "https://cdn.guildsupply.com/products/prod_026_hand.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_026_E_TRW_02.webp",
                 "is_primary": false,
                 "alt_text": "Scale Reference in Hand"
             },
             {
                 "id": "img_026_03",
-                "url": "https://cdn.guildsupply.com/products/prod_026_soil.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_026_E_TRW_03.webp",
                 "is_primary": false,
                 "alt_text": "Digging Capability Demonstration"
             }
@@ -2871,19 +2865,19 @@
             "images": [
             {
                 "id": "img_027_01",
-                "url": "https://cdn.guildsupply.com/products/prod_027_compressed.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_027_E_ORG_01.webp",
                 "is_primary": true,
                 "alt_text": "Fully Compressed State"
             },
             {
                 "id": "img_027_02",
-                "url": "https://cdn.guildsupply.com/products/prod_027_open.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_027_E_ORG_02.webp",
                 "is_primary": false,
                 "alt_text": "Open State ready for packing"
             },
             {
                 "id": "img_027_03",
-                "url": "https://cdn.guildsupply.com/products/prod_027_event.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_027_E_ORG_03.webp",
                 "is_primary": false,
                 "alt_text": "eVent Fabric Base Detail"
             }
@@ -2976,19 +2970,19 @@
             "images": [
             {
                 "id": "img_028_01",
-                "url": "https://cdn.guildsupply.com/products/prod_028_front.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_028_A_ACC_01.webp",
                 "is_primary": true,
                 "alt_text": "Mystery Ranch Tech Holster - Black"
             },
             {
                 "id": "img_028_02",
-                "url": "https://cdn.guildsupply.com/products/prod_028_mount.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_028_A_ACC_02.webp",
                 "is_primary": false,
                 "alt_text": "Shoulder Strap Mounting Example"
             },
             {
                 "id": "img_028_03",
-                "url": "https://cdn.guildsupply.com/products/prod_028_open.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_028_A_ACC_03.webp",
                 "is_primary": false,
                 "alt_text": "Internal Layout and Padding"
             }
@@ -3081,19 +3075,19 @@
             "images": [
             {
                 "id": "img_029_01",
-                "url": "https://cdn.guildsupply.com/products/prod_029_case.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_029_E_HYG_01.webp",
                 "is_primary": true,
                 "alt_text": "Silicone Capsule with Carabiner"
             },
             {
                 "id": "img_029_02",
-                "url": "https://cdn.guildsupply.com/products/prod_029_open.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_029_E_HYG_02.webp",
                 "is_primary": false,
                 "alt_text": "Full Size Towel Deployed"
             },
             {
                 "id": "img_029_03",
-                "url": "https://cdn.guildsupply.com/products/prod_029_detail.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_029_E_HYG_03.webp",
                 "is_primary": false,
                 "alt_text": "Nanofiber Texture Detail"
             }
@@ -3186,19 +3180,19 @@
             "images": [
             {
                 "id": "img_030_01",
-                "url": "https://cdn.guildsupply.com/products/prod_030_glow.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_030_E_BOT_01.webp",
                 "is_primary": true,
                 "alt_text": "Nalgene Glow in the Dark Edition"
             },
             {
                 "id": "img_030_02",
-                "url": "https://cdn.guildsupply.com/products/prod_030_filter.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_030_E_BOT_02.webp",
                 "is_primary": false,
                 "alt_text": "Compatible with Water Filter"
             },
             {
                 "id": "img_030_03",
-                "url": "https://cdn.guildsupply.com/products/prod_030_hot.jpg",
+                "url": "https://cdn.hwcc0321.com/Guild%20Supply/PROD_030_E_BOT_03.webp",
                 "is_primary": false,
                 "alt_text": "Using as Hot Water Bottle in Camp"
             }
