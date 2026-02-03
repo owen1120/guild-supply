@@ -12,23 +12,22 @@ interface MainLayoutProps {
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="flex min-h-screen bg-white">
       <Sidebar />
 
-      <main className="pl-20 min-h-screen flex flex-col">
+      <main className="flex-1 flex flex-col min-w-0">
         {/* Header */}
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md px-8 py-4 flex items-center justify-between border-b border-slate-50">
           
           {/* Welcome Text */}
           <div>
-            <h2 className="text-xl font-bold text-slate-900 font-serif">Hello, brave warrior!</h2>
-            <p className="text-xs text-slate-500 font-sans">Let's go on an adventure together today!</p>
+            <h2 className="text-xl font-bold text-slate-900 font-sans">Hello, brave warrior!</h2>
+            <p className="text-xs text-slate-600 font-sans">Let's go on an adventure together today!</p>
           </div>
 
           {/* Right Actions */}
           <div className="flex items-center gap-4 ml-auto">
             
-            {/* Search Input (Icon 保持適中，但輸入框高度要配合) */}
             <div className="relative group">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-500 transition-colors" size={24} />
               <input 
@@ -38,15 +37,12 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               />
             </div>
 
-            {/* ✨ 校正重點：功能按鈕 ✨ */}
-            {/* Bell Button: p-2 (8px) + size={24} = 40px Box */}
             <button className="p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-600 rounded-xl transition-colors relative flex items-center justify-center">
               <Bell size={24} />
               {/* Notification Dot */}
               <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
             </button>
 
-            {/* LogOut Button: p-2 (8px) + size={24} = 40px Box */}
             <button className="p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-600 rounded-xl transition-colors flex items-center justify-center">
               <LogOut size={24} />
             </button>
@@ -66,10 +62,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                     <div className="w-8 h-4 bg-slate-900 rounded-full relative cursor-pointer">
                         <div className="absolute right-1 top-0.5 w-3 h-3 bg-white rounded-full"></div>
                     </div>
-                     {/* 這裡的小按鈕如果也要 40px 會太大，破壞行高，建議保持小巧或設為獨立區塊。
-                         目前暫時維持原樣，或稍微加大到 p-1.5 size={16} */}
-                     <button className="p-1.5 hover:bg-slate-100 rounded text-slate-600 transition-colors">
-                        <SlidersHorizontal size={16} />
+                     <button className="p-2 hover:bg-slate-100 rounded text-slate-600 transition-colors">
+                        <SlidersHorizontal size={24} />
                     </button>
                 </div>
             </div>

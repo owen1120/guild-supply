@@ -1,4 +1,3 @@
-// src/components/layout/Sidebar.tsx
 import { 
   Home, Swords, ScrollText, MessageSquareWarning, ShieldQuestion, 
   Backpack, Heart, UserRound, Radio, Scale, Settings 
@@ -26,64 +25,73 @@ const FOOTER_ITEMS = [
 ];
 
 export const Sidebar = () => {
-  // 共用的按鈕樣式
-  const buttonBaseClass = "p-2 rounded-xl transition-all duration-300 relative group flex items-center justify-center cursor-pointer";
+  const getButtonClass = (isActive: boolean = false) => {
+    return cn(
+      "p-2 rounded-xl transition-all duration-300 relative group flex items-center justify-center cursor-pointer",
+      
+      isActive 
+        ? [
+            "bg-cyan-400/40 glass-panel-cyan text-cyan-900 shadow-cyan-glow/20"
+          ]
+        : [
+            "text-slate-600",
+            "hover:glass-panel-cyan hover:text-cyan-600"
+          ]
+    );
+  };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-20 flex flex-col items-center bg-white border-r border-slate-100 py-6 z-50 overflow-y-auto no-scrollbar">
+    <aside className="sticky top-0 h-screen p-6 flex flex-col shrink-0 z-50">
       
-      {/* Logo */}
-      <div className={cn(buttonBaseClass, "mb-8 hover:bg-slate-50 shrink-0")}>
-        <img 
-          src="/guild-supply.svg" 
-          alt="Guild Supply" 
-          className="w-6 h-6 object-contain"
-        />
+      <div className="glass-panel w-20 flex-1 flex flex-col justify-between items-center py-4 px-2 rounded-3xl transition-all duration-500 hover:border-white/60">
+
+        <div className="flex flex-col gap-8 w-full items-center">
+          
+          <div className={cn(getButtonClass(false), "shrink-0")}>
+            <img 
+              src="/guild-supply.svg" 
+              alt="Guild Supply" 
+              className="w-6 h-6 object-contain opacity-70 grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+            />
+          </div>
+
+          <nav className="flex flex-col gap-4 w-full items-center">
+            {MENU_ITEMS.map((item, index) => (
+              <button
+                key={index}
+                className={getButtonClass(item.active)}
+              >
+                <item.icon size={24} strokeWidth={item.active ? 2.5 : 2} />
+                
+                <span className="absolute left-14 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50 font-bold tracking-wide font-sans">
+                  {item.label}
+                </span>
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        <div className="flex flex-col gap-6 w-full items-center">
+          
+          <div className="flex flex-col gap-4 w-full items-center">
+            {BOTTOM_ITEMS.map((item, index) => (
+              <button key={index} className={getButtonClass(false)}>
+                <item.icon size={24} />
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-4 w-full items-center pt-4 border-t border-slate-200/50">
+             {FOOTER_ITEMS.map((item, index) => (
+              <button key={index} className={getButtonClass(false)}>
+                <item.icon size={24} />
+              </button>
+            ))}
+          </div>
+
+        </div>
+
       </div>
-
-      {/* Main Nav */}
-      <nav className="flex flex-col gap-4 w-full items-center shrink-0">
-        {MENU_ITEMS.map((item, index) => (
-          <button
-            key={index}
-            className={cn(
-              buttonBaseClass,
-              item.active 
-                ? "bg-slate-900 text-white shadow-lg shadow-slate-900/20" 
-                : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
-            )}
-          >
-            <item.icon size={24} strokeWidth={item.active ? 2.5 : 2} />
-            
-            {/* Tooltip */}
-            <span className="absolute left-14 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50 font-bold tracking-wide font-sans">
-              {item.label}
-            </span>
-          </button>
-        ))}
-      </nav>
-
-      {/* Spacer */}
-      <div className="flex-1 min-h-8" />
-
-      {/* Bottom Actions */}
-      <div className="flex flex-col gap-4 w-full items-center shrink-0 mb-6">
-        {BOTTOM_ITEMS.map((item, index) => (
-          <button key={index} className={cn(buttonBaseClass, "text-slate-400 hover:text-slate-600 hover:bg-slate-50")}>
-            <item.icon size={24} />
-          </button>
-        ))}
-      </div>
-
-      {/* Settings Group */}
-      <div className="flex flex-col gap-4 w-full items-center pt-6 border-t border-slate-100 shrink-0">
-         {FOOTER_ITEMS.map((item, index) => (
-          <button key={index} className={cn(buttonBaseClass, "text-slate-300 hover:text-slate-500 hover:bg-slate-50")}>
-            <item.icon size={24} />
-          </button>
-        ))}
-      </div>
-
     </aside>
   );
 };
