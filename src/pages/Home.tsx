@@ -5,25 +5,35 @@ import type { Product } from '../types/inventory';
 import { ProductCard } from '../components/ui/ProductCard';
 import { InventorySidebar } from '../components/inventory/InventorySidebar';
 import { Pagination } from '../components/ui/Pagination';
-// 👇 引入 Switch
 import { Switch } from '../components/ui/Switch';
-import { SlidersHorizontal } from 'lucide-react'; // 裝飾用 Icon
+import { ArrowDownUp } from 'lucide-react';
+import { cn } from '../utils/cn';
 
 const Home = () => {
-  // ... (原本的 state 保持不變)
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const itemsPerPage = 9;
-
-  // ✨ 新增：Adventure Mode 狀態 (預設關閉)
+  
   const [adventureMode, setAdventureMode] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1536) {
+        setItemsPerPage(12);
+      } else {
+        setItemsPerPage(9);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   useEffect(() => {
-    // ... (fetchData 保持不變) ...
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -37,60 +47,82 @@ const Home = () => {
       }
     };
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, itemsPerPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   return (
-    <div className="flex gap-8 items-start">
+    <div className="flex gap-8 items-start h-full">
       <InventorySidebar />
 
-      <div className="flex-1 flex flex-col gap-8">
+      {/* overflow-hidden: 禁止捲動 */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden pr-1">
         
-        {/* ✨ 新增：頂部工具列 (麵包屑 + Toggle) */}
-        {/* 對照 image_a8083e.png 的上方區域 */}
-        <div className="flex items-center justify-between pt-2">
-            
-            {/* 左側：麵包屑 */}
-            <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+        {/* 頂部控制列 */}
+        {/* pb-2: 稍微給一點下方空間 */}
+        <div className="flex items-center justify-between px-2 shrink-0 z-10">
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-900 font-bold uppercase tracking-wider">
                 <span>World map</span>
-                <SlidersHorizontal size={12} />
-                <span className="text-slate-900 font-bold">Clothes</span>
             </div>
 
-            {/* 右側：Adventure Mode Toggle */}
-            <div className="flex items-center gap-3">
-                <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider">
-                    Adventure Mode
-                </span>
-                <Switch 
-                    checked={adventureMode} 
-                    onCheckedChange={setAdventureMode} 
-                />
+            <div className="flex items-center gap-8">
+                <div className="flex items-center gap-3">
+                    <span className={cn(
+                      "text-xs font-mono font-bold uppercase tracking-wider transition-colors",
+                      adventureMode ? "text-cyan-600" : "text-slate-500"
+                    )}>
+                        Adventure Mode
+                    </span>
+                    <Switch 
+                        checked={adventureMode} 
+                        onCheckedChange={setAdventureMode} 
+                    />
+                </div>
+
+                <button className="glass-panel w-10 h-10 flex items-center justify-center rounded-xl text-slate-600 hover:text-cyan-600 transition-colors cursor-pointer active:scale-95">
+                    <ArrowDownUp size={20} />
+                </button>
             </div>
         </div>
 
-        {/* 網格區域：將 adventureMode 傳入 ProductCard */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 min-h-150">
-          {loading ? (
-            Array.from({ length: itemsPerPage }).map((_, index) => (
-              <div key={index} className="aspect-4/5 rounded-3xl bg-slate-100 animate-pulse glass-panel"></div>
-            ))
-          ) : (
-            products.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                adventureMode={adventureMode} // 👈 傳遞狀態！
-              />
-            ))
-          )}
+        {/* 產品列表 */}
+        <div className="flex-1 min-h-0 w-full relative">
+            {/* 💎 核心修改：p-6 (Padding)
+               給予 Grid 內部足夠的呼吸空間，這樣陰影就不會被容器邊緣切斷，
+               也不會因為貼得太近而被上方或下方的元素遮擋。
+            */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 grid-rows-3 gap-4 h-full w-full p-6">
+            {loading ? (
+                Array.from({ length: itemsPerPage }).map((_, index) => (
+                <div key={index} className="w-full h-full flex items-center justify-center">
+                   <div className="aspect-4/3 h-full max-w-full rounded-3xl bg-slate-100 animate-pulse glass-panel"></div>
+                </div>
+                ))
+            ) : (
+                products
+                .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) 
+                .map((product) => (
+                    <div key={product.id} className="w-full h-full flex items-center justify-center min-h-0 min-w-0 overflow-visible p-1">
+                        <div className="aspect-4/3 h-full max-w-full">
+                             <ProductCard 
+                                product={product} 
+                                adventureMode={adventureMode}
+                                // 💎 核心修改：hover:z-20
+                                // 確保滑鼠移上去時，卡片會浮在所有介面(包括麵包屑和分頁)之上
+                                className="hover:z-20 relative"
+                             />
+                        </div>
+                    </div>
+                ))
+            )}
+            </div>
         </div>
 
-        {/* 底部頁面標籤 */}
-        <div className="pb-12">
+        {/* 分頁 */}
+        {/* z-10 確保它有自己的層級，但比 Hover 的卡片低 */}
+        <div className="pb-4 shrink-0 mt-auto px-6 z-10">
            <Pagination 
              currentPage={currentPage}
              totalPages={totalPages}

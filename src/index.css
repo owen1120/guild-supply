@@ -2,6 +2,19 @@
 
 @import "tailwindcss";
 
+@layer base {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  #root {
+    height: 100%;
+  }
+}
+
 @theme {
   --font-sans: "Roboto Mono", monospace;
 
