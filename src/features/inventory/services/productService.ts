@@ -5,18 +5,114 @@ import type { FilterState } from '../../../components/inventory/InventorySidebar
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'; 
 
-interface ApiResponse {
-  products: Product[];
+interface DBImage {
+  id: string;
+  url: string;
+  altText?: string;
+  isPrimary?: boolean;
 }
 
-interface RpgStats {
-  def?: number;
+interface DBProduct {
+  id: string;
+  title?: string;
+  category?: string;
+  price?: number;
+  description?: string;
+  isPublished?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  brand?: string;
+  sku?: string;
+  stock?: number;
   agi?: number;
+  def?: number;
   res?: number;
+  rarity?: string;
+  images?: string[] | DBImage[] | null; 
+  rpgDetails?: Record<string, unknown> | null;
+  options?: Record<string, unknown> | null;
+  sections?: Record<string, unknown> | null;
+  video?: Record<string, unknown> | null;
 }
+
+interface BackendResponse {
+  success: boolean;
+  data: DBProduct[]; 
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
+const fixDomain = (url: string): string => {
+  if (!url) return '/assets/items/default.png';
+  if (url.includes('cdn.guildsupply.com')) {
+    return url.replace('cdn.guildsupply.com', 'cdn.hwcc0321.com');
+  }
+  return url;
+};
+
+const adaptProduct = (dbData: DBProduct): Product => {
+  let iconUrl = '/assets/items/default.png';
+  let imagesList: string[] = [];
+
+  if (Array.isArray(dbData.images) && dbData.images.length > 0) {
+      const firstImg = dbData.images[0];
+      if (typeof firstImg === 'object' && firstImg !== null && 'url' in firstImg) {
+          const imgObjs = dbData.images as DBImage[];
+          imagesList = imgObjs.map(img => fixDomain(img.url));
+          const primaryImg = imgObjs.find(img => img.isPrimary);
+          if (primaryImg) {
+              iconUrl = fixDomain(primaryImg.url);
+          } else {
+              iconUrl = fixDomain(imgObjs[0].url);
+          }
+      } 
+      else if (typeof firstImg === 'string') {
+          const rawUrl = firstImg;
+          iconUrl = fixDomain(rawUrl);
+          imagesList = (dbData.images as string[]).map(fixDomain);
+      }
+  }
+
+  return {
+    id: dbData.id,
+    basic_info: {
+      name: dbData.title || 'Unknown Item', 
+      description: dbData.description || '',
+      category: dbData.category || 'General',
+    },
+    pricing: {
+      base_price: dbData.price || 0,
+      currency: 'G',
+    },
+    rpg_tuning: {
+      rarity: dbData.rarity || 'N', 
+      stats: {
+        def: dbData.def || 0,
+        agi: dbData.agi || 0,
+        res: dbData.res || 0
+      },
+    },
+    visuals: {
+      icon: iconUrl,       
+      images: imagesList,  
+      model_3d: '',
+    },
+    metadata: {
+      is_published: dbData.isPublished ?? true,
+      created_at: dbData.createdAt || new Date().toISOString(),
+      updated_at: dbData.updatedAt || new Date().toISOString(),
+      brand: dbData.brand,
+      sku: dbData.sku,
+      stock: dbData.stock
+    }
+  } as unknown as Product;
+};
 
 export const productService = {
-  
   getAll: async (
       page = 1, 
       limit = 9, 
@@ -24,66 +120,33 @@ export const productService = {
       filters?: FilterState 
   ): Promise<{ data: Product[]; totalCount: number }> => {
     try {
-      const response = await axios.get<ApiResponse>(`${API_URL}/products`);
-      let allProducts = response.data.products || [];
+      const params = new URLSearchParams();
+      params.append('page', page.toString());
+      params.append('limit', limit.toString());
 
       if (filters) {
-          allProducts = allProducts.filter(product => {
-              if (filters.rarity.length > 0) {
-                  if (!filters.rarity.includes(product.rpg_tuning.rarity)) {
-                      return false;
-                  }
-              }
-
-              const price = product.pricing.base_price;
-              if (filters.minPrice && price < Number(filters.minPrice)) return false;
-              if (filters.maxPrice && price > Number(filters.maxPrice)) return false;
-
-              const stats = product.rpg_tuning.stats as unknown as RpgStats; 
-              
-              const def = stats?.def ?? 0;
-              const agi = stats?.agi ?? 0;
-              const res = stats?.res ?? 0;
-
-              if (def < filters.stats.def.min || def > filters.stats.def.max) return false;
-              if (agi < filters.stats.agi.min || agi > filters.stats.agi.max) return false;
-              if (res < filters.stats.res.min || res > filters.stats.res.max) return false;
-
-              return true;
-          });
+          if (filters.minPrice) params.append('minPrice', filters.minPrice);
+          if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
+          if (filters.rarity.length > 0) {
+             params.append('rarity', filters.rarity.join(',')); 
+          }
+          params.append('minDef', filters.stats.def.min.toString());
+          params.append('maxDef', filters.stats.def.max.toString());
+          params.append('minAgi', filters.stats.agi.min.toString());
+          params.append('maxAgi', filters.stats.agi.max.toString());
+          params.append('minRes', filters.stats.res.min.toString());
+          params.append('maxRes', filters.stats.res.max.toString());
       }
+      params.append('sort', sort);
 
-      const sortedProducts = [...allProducts];
-      switch (sort) {
-          case 'name_asc':
-              sortedProducts.sort((a, b) => a.basic_info.name.localeCompare(b.basic_info.name));
-              break;
-          case 'name_desc':
-              sortedProducts.sort((a, b) => b.basic_info.name.localeCompare(a.basic_info.name));
-              break;
-          case 'price_asc':
-              sortedProducts.sort((a, b) => a.pricing.base_price - b.pricing.base_price);
-              break;
-          case 'price_desc':
-              sortedProducts.sort((a, b) => b.pricing.base_price - a.pricing.base_price);
-              break;
-          case 'newest':
-              sortedProducts.sort((a, b) => String(b.id).localeCompare(String(a.id), undefined, { numeric: true })); 
-              break;
-          case 'oldest':
-              sortedProducts.sort((a, b) => String(a.id).localeCompare(String(b.id), undefined, { numeric: true }));
-              break;
-      }
-
-      const startIndex = (page - 1) * limit;
-      const endIndex = startIndex + limit;
-      const paginatedData = sortedProducts.slice(startIndex, endIndex);
+      const response = await axios.get<BackendResponse>(`${API_URL}/products?${params.toString()}`);
+      const { success, data, pagination } = response.data;
+      if (!success) throw new Error('API reported failure');
 
       return {
-        data: paginatedData,
-        totalCount: sortedProducts.length, 
+        data: data.map(adaptProduct),
+        totalCount: pagination.total, 
       };
-
     } catch (error) {
       console.error("Failed to fetch products:", error);
       return { data: [], totalCount: 0 };
@@ -92,11 +155,27 @@ export const productService = {
 
   getById: async (id: string): Promise<Product | undefined> => {
     try {
-      const response = await axios.get<Product>(`${API_URL}/products/${id}`);
-      return response.data;
+      const response = await axios.get(`${API_URL}/products/${id}`);
+      if (response.data && response.data.success) {
+          return adaptProduct(response.data.data as DBProduct);
+      }
+      return undefined;
     } catch (error) {
       console.error(`Failed to fetch product ${id}:`, error);
       return undefined;
+    }
+  },
+
+  getFeatured: async (): Promise<Product[]> => {
+    try {
+      const response = await axios.get<{ success: boolean; data: DBProduct[] }>(`${API_URL}/products/featured`);
+      if (response.data && response.data.success) {
+        return response.data.data.map(adaptProduct);
+      }
+      return [];
+    } catch (error) {
+      console.error("Failed to fetch featured products:", error);
+      return [];
     }
   }
 };
