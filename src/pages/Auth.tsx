@@ -1,13 +1,17 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { Key, IdCard, Eye, EyeOff, Diamond, Radio, ChevronLeft, AlertCircle, Loader2 } from 'lucide-react';
 import { cn } from '../utils/cn';
-import { authService } from '../features/auth/services/authService'; 
+import { authService } from '../features/auth/services/authService';
+import { useAuthStore } from '../store/useAuthStore'; 
 
 type AuthMode = 'login' | 'signup' | 'forgot';
 
 export default function Auth() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  
+  const { login } = useAuthStore(); 
+
   const [mode, setMode] = useState<AuthMode>('login');
 
   const [formData, setFormData] = useState({
@@ -21,7 +25,7 @@ export default function Auth() {
 
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null); 
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -92,7 +96,13 @@ export default function Auth() {
     try {
       if (mode === 'login') {
         const res = await authService.login({ email: formData.email, password: formData.password });
+        
+        const userName = res?.user?.name || formData.email.split('@')[0];
+        
+        login({ name: userName, email: formData.email });
+
         console.log('Login Success:', res);
+        
         navigate('/'); 
 
       } else if (mode === 'signup') {
