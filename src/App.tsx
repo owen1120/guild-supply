@@ -3,6 +3,7 @@ import { MainLayout } from './components/layout/MainLayout';
 import Home from './pages/Home'; 
 import Inventory from './pages/Inventory'; 
 import ProductDetails from './pages/ProductDetails';
+import Auth from './pages/Auth';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <MainLayout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
