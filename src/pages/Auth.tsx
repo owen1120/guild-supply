@@ -186,8 +186,27 @@ export default function Auth() {
           
           {mode === 'signup' && (
             <div className="grid grid-cols-2 gap-4">
-              <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} disabled={isLoading} className={getInputClass('name')} />
-              <input type="text" name="dob" placeholder="Date of birth" value={formData.dob} onChange={handleChange} disabled={isLoading} className={getInputClass('dob')} />
+              <input 
+                type="text" 
+                name="name" 
+                placeholder="Name" 
+                value={formData.name} 
+                onChange={handleChange} 
+                disabled={isLoading} 
+                className={getInputClass('name')} 
+              />
+              <input 
+                type="text" 
+                name="dob" 
+                placeholder="Date of birth" 
+                value={formData.dob} 
+                onChange={handleChange}
+                onFocus={(e) => (e.target.type = 'date')}
+                onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }}
+                max={new Date().toISOString().split("T")[0]} 
+                disabled={isLoading} 
+                className={cn(getInputClass('dob'), "appearance-none")} 
+              />
             </div>
           )}
 

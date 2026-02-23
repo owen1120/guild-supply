@@ -10,7 +10,9 @@ export interface SignupPayload {
   password?: string;
 }
 
-const BASE_URL = '/guild-supply/api/auth';
+const API_URL = import.meta.env.VITE_API_URL || '';
+
+const BASE_URL = `${API_URL}/auth`;
 
 export const authService = {
   async login(payload: LoginPayload) {
