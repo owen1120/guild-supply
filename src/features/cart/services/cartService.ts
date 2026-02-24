@@ -4,7 +4,8 @@ export interface CartItem {
   title: string; 
   price: number;
   quantity: number;
-  imageUrl: string;
+  image?: { url: string; altText?: string };
+  imageUrl?: string;
   options?: Record<string, string>;
   stock: number;
 }

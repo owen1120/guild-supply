@@ -97,11 +97,16 @@ export default function Auth() {
       if (mode === 'login') {
         const res = await authService.login({ email: formData.email, password: formData.password });
         
+        const token = res?.token || res?.data?.token;
+        if (token) {
+          localStorage.setItem('token', token);
+        }
+
         const userName = res?.user?.name || formData.email.split('@')[0];
         
         login({ name: userName, email: formData.email });
 
-        console.log('Login Success:', res);
+        console.log('Login Success:', res, 'Token saved:', !!token);
         
         navigate('/'); 
 

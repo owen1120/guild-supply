@@ -47,8 +47,8 @@ export default function Cart() {
             <div key={item.id} className="glass-panel p-4 rounded-3xl flex gap-6 items-center border border-white/60 hover:shadow-md transition-shadow">
               
               <div className="w-24 h-24 shrink-0 rounded-2xl bg-slate-50 border border-slate-100 overflow-hidden flex items-center justify-center">
-                {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.title} className="w-4/5 h-4/5 object-contain" />
+                {(item.image?.url || item.imageUrl) ? (
+                  <img src={item.image?.url || item.imageUrl} alt={item.title} className="w-4/5 h-4/5 object-contain" />
                 ) : (
                   <ShieldAlert className="w-8 h-8 text-slate-300" />
                 )}
