@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Shield, Diamond, Loader2, AlertCircle, ShoppingCart, Zap, List } from 'lucide-react';
+import { Shield, Diamond, Loader2, AlertCircle, ShoppingCart, Zap, List, CheckCircle2 } from 'lucide-react';
 import { productService, type ProductDetail as ProductType } from '../features/products/services/productService';
+import { useCartStore } from '../features/cart/store/useCartStore'; // 💎 引入全域金庫
 import { cn } from '../utils/cn';
 
 const rarityStyles: Record<string, { shadow: string; badge: string }> = {
@@ -21,6 +22,11 @@ export default function ProductDetail() {
 
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [quantity, setQuantity] = useState(1);
+  
+  const [showToast, setShowToast] = useState(false);
+
+  const addToCart = useCartStore(state => state.addToCart);
+  const isCartLoading = useCartStore(state => state.isLoading);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -41,7 +47,7 @@ export default function ProductDetail() {
           }
         });
         setSelectedOptions(initialOptions);
-        setQuantity(1); 
+        setQuantity(1);
 
       } catch (err) {
         setError('A magical anomaly occurred. Failed to retrieve equipment data.');
@@ -53,6 +59,23 @@ export default function ProductDetail() {
 
     fetchProduct();
   }, [id]);
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    try {
+      await addToCart({
+        productId: product.id,
+        quantity: quantity,
+        options: selectedOptions
+      });
+      
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    } catch (err) {
+      console.error(err);
+      alert('結界異常！無法將物品存入行囊。');
+    }
+  };
 
   if (isLoading) {
     return (
@@ -85,8 +108,16 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="flex h-full w-full gap-8 md:gap-12 min-h-0">
+    <div className="flex h-full w-full gap-8 md:gap-12 min-h-0 relative">
       
+      <div className={cn(
+        "absolute top-4 right-8 z-50 flex items-center gap-3 bg-slate-900 text-white px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 transform",
+        showToast ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0 pointer-events-none"
+      )}>
+        <CheckCircle2 className="w-6 h-6 text-cyan-400" />
+        <span className="font-mono font-bold">Successfully added to cart!</span>
+      </div>
+
       <div className="w-1/2 flex flex-col gap-6 shrink-0 h-full relative">
         <div className="flex gap-4 flex-1 min-h-0">
           <div className={cn(
@@ -221,21 +252,23 @@ export default function ProductDetail() {
                 </span>
                 
                 <div className="flex items-center gap-4 bg-slate-100/80 rounded-2xl p-1.5 border border-slate-200/50">
-                  <button onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1} className="w-8 h-8 flex items-center justify-center rounded-xl bg-white text-slate-600 shadow-sm hover:text-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all">-</button>
+                  <button onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1 || isCartLoading} className="w-8 h-8 flex items-center justify-center rounded-xl bg-white text-slate-600 shadow-sm hover:text-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all">-</button>
                   <span className="font-mono font-bold w-6 text-center text-slate-800">{quantity}</span>
-                  <button onClick={() => handleQuantityChange(1)} disabled={quantity >= product.stock} className="w-8 h-8 flex items-center justify-center rounded-xl bg-white text-slate-600 shadow-sm hover:text-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all">+</button>
+                  <button onClick={() => handleQuantityChange(1)} disabled={quantity >= product.stock || isCartLoading} className="w-8 h-8 flex items-center justify-center rounded-xl bg-white text-slate-600 shadow-sm hover:text-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all">+</button>
                 </div>
               </div>
 
               <div className="flex gap-4">
                 <button 
-                  disabled={product.stock === 0}
+                  onClick={handleAddToCart}
+                  disabled={product.stock === 0 || isCartLoading}
                   className="flex-1 py-4 rounded-2xl border-2 border-cyan-500 text-cyan-600 font-mono font-bold text-sm tracking-widest flex items-center justify-center gap-2 hover:bg-cyan-50 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-400"
                 >
-                  <ShoppingCart className="w-5 h-5" /> CART
+                  {isCartLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShoppingCart className="w-5 h-5" />} 
+                  {isCartLoading ? 'ADDING...' : 'CART'}
                 </button>
                 <button 
-                  disabled={product.stock === 0}
+                  disabled={product.stock === 0 || isCartLoading}
                   className="flex-1 py-4 rounded-2xl bg-cyan-500 text-white font-mono font-bold text-sm tracking-widest flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(34,211,238,0.4)] hover:bg-cyan-400 hover:shadow-[0_4px_25px_rgba(34,211,238,0.6)] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
                 >
                   <Zap className="w-5 h-5" /> BUY NOW

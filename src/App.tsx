@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MainLayout } from './components/layout/MainLayout'; 
 import Home from './pages/Home'; 
+import Auth from './pages/Auth';
 import Inventory from './pages/Inventory'; 
 import ProductDetails from './pages/ProductDetails';
-import Auth from './pages/Auth';
+import Cart from './pages/Cart';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>

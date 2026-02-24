@@ -1,9 +1,11 @@
+import { useEffect } from 'react'; 
 import { 
   Home, Swords, ScrollText, MessageSquareWarning, ShieldQuestion, 
   Backpack, Heart, UserRound, Radio, Scale, Settings 
 } from 'lucide-react';
-import { NavLink } from 'react-router-dom'; 
+import { NavLink, useNavigate } from 'react-router-dom'; 
 import { cn } from '../../utils/cn';
+import { useCartStore } from '../../features/cart/store/useCartStore'; 
 
 const MENU_ITEMS = [
   { icon: Home, label: 'Home', path: '/' },
@@ -14,7 +16,7 @@ const MENU_ITEMS = [
 ];
 
 const BOTTOM_ITEMS = [
-  { icon: Backpack, label: 'Inventory' },
+  { icon: Backpack, label: 'Inventory', path: '/cart' }, 
   { icon: Heart, label: 'Wishlist' },
   { icon: UserRound, label: 'Profile' },
 ];
@@ -26,6 +28,15 @@ const FOOTER_ITEMS = [
 ];
 
 export const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const totalQuantity = useCartStore(state => state.totalQuantity);
+  const fetchCart = useCartStore(state => state.fetchCart);
+
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
+
   const getButtonClass = (isActive: boolean = false) => {
     return cn(
       "p-2 rounded-xl transition-all duration-300 relative group flex items-center justify-center cursor-pointer",
@@ -80,17 +91,38 @@ export const Sidebar = () => {
         <div className="flex flex-col gap-6 w-full items-center">
           
           <div className="flex flex-col gap-4 w-full items-center">
-            {BOTTOM_ITEMS.map((item, index) => (
-              <button key={index} className={getButtonClass(false)}>
-                <item.icon size={24} />
-              </button>
-            ))}
+            {BOTTOM_ITEMS.map((item, index) => {
+               const isCart = item.label === 'Inventory'; 
+
+               return (
+                <button 
+                  key={index} 
+                  className={getButtonClass(false)}
+                  onClick={() => item.path && navigate(item.path)} 
+                >
+                  <item.icon size={24} />
+                  
+                  {isCart && totalQuantity > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white border-2 border-white shadow-sm">
+                      {totalQuantity > 99 ? '99+' : totalQuantity}
+                    </span>
+                  )}
+
+                  <span className="absolute left-14 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50 font-bold tracking-wide font-sans">
+                      {item.label}
+                  </span>
+                </button>
+              )
+            })}
           </div>
 
           <div className="flex flex-col gap-4 w-full items-center pt-4 border-t border-slate-200/50">
              {FOOTER_ITEMS.map((item, index) => (
               <button key={index} className={getButtonClass(false)}>
                 <item.icon size={24} />
+                 <span className="absolute left-14 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50 font-bold tracking-wide font-sans">
+                      {item.label}
+                  </span>
               </button>
             ))}
           </div>
