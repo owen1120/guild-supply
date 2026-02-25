@@ -18,7 +18,7 @@ const MENU_ITEMS = [
 const BOTTOM_ITEMS = [
   { icon: Backpack, label: 'Inventory', path: '/cart' }, 
   { icon: Heart, label: 'Wishlist' },
-  { icon: UserRound, label: 'Profile' },
+  { icon: UserRound, label: 'Profile', path: '/profile' },
 ];
 
 const FOOTER_ITEMS = [
