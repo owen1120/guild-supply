@@ -16,6 +16,8 @@ interface ProfileState {
   createAddress: (payload: CreateAddressPayload) => Promise<void>;
   updateAddress: (id: string, payload: UpdateAddressPayload) => Promise<void>;
   deleteAddress: (id: string) => Promise<void>;
+  
+  clearLocalProfile: () => void;
 }
 
 export const useProfileStore = create<ProfileState>((set, get) => ({
@@ -125,5 +127,9 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
     } finally {
       set({ isLoading: false });
     }
+  },
+
+  clearLocalProfile: () => {
+    set({ profile: null, addresses: [], error: null });
   }
 }));

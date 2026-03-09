@@ -1,9 +1,12 @@
+// src/pages/Dashboard.tsx
 import { useState, useEffect } from 'react';
 import { 
   Swords, Shield, HelpCircle, 
   MapPin, ShoppingBag, CreditCard, MessageCircle, ChevronRight, Loader2, Globe, RefreshCcw, Star, UserCircle
 } from 'lucide-react';
 import { useProfileStore } from '../features/profile/store/useProfileStore';
+// 💎 1. 引入我們剛寫好的超強物流座標元件
+import AddressBook from '../features/profile/components/AddressBook';
 
 type DashboardView = 'overview' | 'address' | 'orders' | 'profile-edit' | 'rank-info' | 'credits';
 
@@ -28,13 +31,14 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col h-full w-full min-h-0 px-[clamp(16px,2vw,32px)] pb-[clamp(16px,2vh,32px)] overflow-hidden">
       
+      {/* 🌟 上半部：英雄執照 (Hero's License) */}
       <div className="shrink-0 flex flex-col gap-[clamp(8px,1.5vh,24px)] pt-[clamp(8px,1vh,16px)] mb-[clamp(12px,2vh,32px)]">
         
         <div className="text-center pb-[clamp(4px,1vh,16px)] pt-[clamp(4px,1vh,8px)] relative">
            {activeView !== 'overview' && (
              <button 
                onClick={() => setActiveView('overview')}
-               className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-2 text-slate-400 hover:text-cyan-500 transition-colors font-mono text-[clamp(10px,1.2vh,12px)]"
+               className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-2 text-slate-400 hover:text-cyan-500 transition-colors font-mono text-[clamp(10px,1.2vh,12px)] z-10"
              >
                <ChevronRight className="w-4 h-4 rotate-180" /> Back to Overview
              </button>
@@ -95,11 +99,14 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* 🧩 下半部：動態內容區塊 */}
       <div className="flex-1 min-h-0 relative">
         
+        {/* === 視圖 A：總覽便當盒 (Overview Grid) === */}
         {activeView === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-[clamp(12px,2vh,24px)] h-full animate-in fade-in slide-in-from-bottom-4 duration-500">
             
+            {/* 左側大區塊：個人細節表單 */}
             <div className="lg:col-span-2 glass-panel p-[clamp(16px,3vh,32px)] rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm flex flex-col min-h-0">
               <h3 className="font-mono text-[clamp(11px,1.3vh,14px)] font-bold text-slate-800 tracking-widest uppercase mb-[clamp(12px,2vh,24px)] shrink-0">
                 My details
@@ -135,6 +142,7 @@ export default function Dashboard() {
               </div>
             </div>
 
+            {/* 中間專欄：My Account & Support */}
             <div className="flex flex-col gap-[clamp(12px,2vh,24px)] h-full min-h-0">
               
               <div className="glass-panel p-[clamp(16px,2vh,24px)] rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm flex-1 flex flex-col min-h-0 justify-around">
@@ -179,6 +187,7 @@ export default function Dashboard() {
 
             </div>
 
+            {/* 右側專欄：Language & region / We're here to help */}
             <div className="flex flex-col gap-[clamp(12px,2vh,24px)] h-full min-h-0">
               
               <div className="glass-panel p-[clamp(16px,2vh,24px)] rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm flex-1 flex flex-col min-h-0 justify-around">
@@ -223,61 +232,49 @@ export default function Dashboard() {
         )}
 
         {/* ======================================================= */}
-        {/* Placeholder Views */}
+        {/* 🛠️ 其他預備施工大廳 & 💎 替換上場的 AddressBook 元件         */}
         {/* ======================================================= */}
 
+        {/* 視圖：編輯個人資料 (Profile Edit) */}
         {activeView === 'profile-edit' && (
           <div className="glass-panel p-8 rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm h-full flex flex-col items-center justify-center animate-in fade-in slide-in-from-right-8 duration-500 min-h-0">
             <UserCircle className="w-12 h-12 text-cyan-500 mb-4 animate-pulse shrink-0" />
             <h2 className="text-[clamp(20px,2.5vh,28px)] font-serif font-bold text-slate-800 mb-2 shrink-0">Avatar & Profile Editor</h2>
             <p className="font-mono text-[clamp(12px,1.4vh,14px)] text-slate-500 mb-6 shrink-0">Preparing the soul recalibration chamber...</p>
-            <button onClick={() => setActiveView('overview')} className="px-6 py-2 rounded-xl border-2 border-slate-200 text-slate-600 font-mono font-bold text-[clamp(12px,1.4vh,14px)] hover:border-cyan-500 hover:text-cyan-600 transition-colors shrink-0">
-              Back to Overview
-            </button>
           </div>
         )}
 
+        {/* 視圖：公會階級 (Rank Info) */}
         {activeView === 'rank-info' && (
           <div className="glass-panel p-8 rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm h-full flex flex-col items-center justify-center animate-in fade-in slide-in-from-right-8 duration-500 min-h-0">
             <Star className="w-12 h-12 text-cyan-500 mb-4 animate-pulse shrink-0" />
             <h2 className="text-[clamp(20px,2.5vh,28px)] font-serif font-bold text-slate-800 mb-2 shrink-0">Guild Rank & Benefits</h2>
             <p className="font-mono text-[clamp(12px,1.4vh,14px)] text-slate-500 mb-6 shrink-0">Fetching your honorable achievements and upcoming rewards...</p>
-            <button onClick={() => setActiveView('overview')} className="px-6 py-2 rounded-xl border-2 border-slate-200 text-slate-600 font-mono font-bold text-[clamp(12px,1.4vh,14px)] hover:border-cyan-500 hover:text-cyan-600 transition-colors shrink-0">
-              Back to Overview
-            </button>
           </div>
         )}
 
+        {/* 視圖：進行中的訂單 (Orders) */}
         {activeView === 'orders' && (
           <div className="glass-panel p-8 rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm h-full flex flex-col items-center justify-center animate-in fade-in slide-in-from-right-8 duration-500 min-h-0">
             <ShoppingBag className="w-12 h-12 text-cyan-500 mb-4 animate-bounce shrink-0" />
             <h2 className="text-[clamp(20px,2.5vh,28px)] font-serif font-bold text-slate-800 mb-2 shrink-0">Active Orders & Returns</h2>
             <p className="font-mono text-[clamp(12px,1.4vh,14px)] text-slate-500 mb-6 shrink-0">Tracking your ongoing logistics...</p>
-            <button onClick={() => setActiveView('overview')} className="px-6 py-2 rounded-xl border-2 border-slate-200 text-slate-600 font-mono font-bold text-[clamp(12px,1.4vh,14px)] hover:border-cyan-500 hover:text-cyan-600 transition-colors shrink-0">
-              Back to Overview
-            </button>
           </div>
         )}
 
+        {/* 視圖：點數與退款 (Credits) */}
         {activeView === 'credits' && (
           <div className="glass-panel p-8 rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm h-full flex flex-col items-center justify-center animate-in fade-in slide-in-from-right-8 duration-500 min-h-0">
             <RefreshCcw className="w-12 h-12 text-cyan-500 mb-4 animate-spin-slow shrink-0" />
             <h2 className="text-[clamp(20px,2.5vh,28px)] font-serif font-bold text-slate-800 mb-2 shrink-0">Credits & Refunds Center</h2>
             <p className="font-mono text-[clamp(12px,1.4vh,14px)] text-slate-500 mb-6 shrink-0">Accessing your guild treasury...</p>
-            <button onClick={() => setActiveView('overview')} className="px-6 py-2 rounded-xl border-2 border-slate-200 text-slate-600 font-mono font-bold text-[clamp(12px,1.4vh,14px)] hover:border-cyan-500 hover:text-cyan-600 transition-colors shrink-0">
-              Back to Overview
-            </button>
           </div>
         )}
 
+        {/* 💎 視圖：物流座標 (Address Book) - 正式替換成我們剛剛寫好的元件！ */}
         {activeView === 'address' && (
-          <div className="glass-panel p-8 rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm h-full flex flex-col items-center justify-center animate-in fade-in slide-in-from-right-8 duration-500 min-h-0">
-            <MapPin className="w-12 h-12 text-cyan-500 mb-4 animate-bounce shrink-0" />
-            <h2 className="text-[clamp(20px,2.5vh,28px)] font-serif font-bold text-slate-800 mb-2 shrink-0">Address Book System</h2>
-            <p className="font-mono text-[clamp(12px,1.4vh,14px)] text-slate-500 mb-6 shrink-0">Preparing the spatial teleportation coordinates...</p>
-            <button onClick={() => setActiveView('overview')} className="px-6 py-2 rounded-xl border-2 border-slate-200 text-slate-600 font-mono font-bold text-[clamp(12px,1.4vh,14px)] hover:border-cyan-500 hover:text-cyan-600 transition-colors shrink-0">
-              Back to Overview
-            </button>
+          <div className="h-full w-full min-h-0 relative animate-in fade-in slide-in-from-right-8 duration-500">
+            <AddressBook />
           </div>
         )}
 

@@ -12,6 +12,7 @@ interface CartState {
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   removeItem: (itemId: string) => Promise<void>;
   clearCart: () => Promise<void>;
+  clearLocalCart: () => void; 
 }
 
 const processCartData = (data: Partial<CartData>) => {
@@ -95,5 +96,9 @@ export const useCartStore = create<CartState>((set) => ({
     } finally {
       set({ isLoading: false });
     }
+  },
+
+  clearLocalCart: () => {
+    set({ items: [], totalAmount: 0, totalQuantity: 0, error: null });
   }
 }));
