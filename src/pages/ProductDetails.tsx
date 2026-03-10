@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Shield, Diamond, Loader2, AlertCircle, ShoppingCart, Zap, List, CheckCircle2 } from 'lucide-react';
+import { Shield, Diamond, Loader2, AlertCircle, ShoppingCart, Zap, List, CheckCircle2, Heart } from 'lucide-react';
 import { productService, type ProductDetail as ProductType } from '../features/products/services/productService';
-import { useCartStore } from '../features/cart/store/useCartStore'; // 💎 引入全域金庫
+import { useCartStore } from '../features/cart/store/useCartStore'; 
+import { useWishlistStore } from '../features/wishlist/store/useWishlistStore';
 import { cn } from '../utils/cn';
 
 const rarityStyles: Record<string, { shadow: string; badge: string }> = {
@@ -24,9 +25,16 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   
   const [showToast, setShowToast] = useState(false);
+  
+  const [isWishlistLoading, setIsWishlistLoading] = useState(false);
 
   const addToCart = useCartStore(state => state.addToCart);
   const isCartLoading = useCartStore(state => state.isLoading);
+
+  const toggleWishlist = useWishlistStore(state => state.toggleWishlist);
+  const checkIsWishlisted = useWishlistStore(state => state.checkIsWishlisted);
+  
+  const isWishlisted = product ? checkIsWishlisted(product.id) : false;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -74,6 +82,19 @@ export default function ProductDetail() {
     } catch (err) {
       console.error(err);
       alert('結界異常！無法將物品存入行囊。');
+    }
+  };
+
+  const handleWishlistClick = async () => {
+    if (!product) return;
+    setIsWishlistLoading(true);
+    try {
+      await toggleWishlist(product.id);
+    } catch (err) {
+      console.error(err);
+      alert('無法記錄願望清單，請確認是否已登入公會。');
+    } finally {
+      setIsWishlistLoading(false);
     }
   };
 
@@ -216,12 +237,12 @@ export default function ProductDetail() {
           <div className="shrink-0 bg-slate-50/50 rounded-3xl p-6 border border-slate-100">
             <div 
               className="text-slate-600 leading-relaxed font-sans 
-                         [&>h3]:text-lg [&>h3]:font-bold [&>h3]:text-slate-800 [&>h3]:mb-3 [&>h3]:mt-6 [&>h3:first-child]:mt-0 [&>h3]:flex [&>h3]:items-center [&>h3]:gap-2
-                         [&>p]:mb-4 [&>p:last-child]:mb-0
-                         [&>ul]:list-none [&>ul]:space-y-3 [&>ul]:mb-4
-                         [&>ul>li]:relative [&>ul>li]:pl-6 [&>ul>li]:text-slate-600
-                         [&>ul>li::before]:content-[''] [&>ul>li::before]:absolute [&>ul>li::before]:left-0 [&>ul>li::before]:top-2 [&>ul>li::before]:w-2 [&>ul>li::before]:h-2 [&>ul>li::before]:bg-cyan-400 [&>ul>li::before]:rounded-sm [&>ul>li::before]:shadow-[0_0_8px_rgba(34,211,238,0.6)]
-                         [&>ul>li>strong]:text-slate-800 [&>ul>li>strong]:font-bold"
+                          [&>h3]:text-lg [&>h3]:font-bold [&>h3]:text-slate-800 [&>h3]:mb-3 [&>h3]:mt-6 [&>h3:first-child]:mt-0 [&>h3]:flex [&>h3]:items-center [&>h3]:gap-2
+                          [&>p]:mb-4 [&>p:last-child]:mb-0
+                          [&>ul]:list-none [&>ul]:space-y-3 [&>ul]:mb-4
+                          [&>ul>li]:relative [&>ul>li]:pl-6 [&>ul>li]:text-slate-600
+                          [&>ul>li::before]:content-[''] [&>ul>li::before]:absolute [&>ul>li::before]:left-0 [&>ul>li::before]:top-2 [&>ul>li::before]:w-2 [&>ul>li::before]:h-2 [&>ul>li::before]:bg-cyan-400 [&>ul>li::before]:rounded-sm [&>ul>li::before]:shadow-[0_0_8px_rgba(34,211,238,0.6)]
+                          [&>ul>li>strong]:text-slate-800 [&>ul>li>strong]:font-bold"
               dangerouslySetInnerHTML={{ __html: product.description }}
             />
           </div>
@@ -258,7 +279,27 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-3">
+                
+                <button 
+                  onClick={handleWishlistClick}
+                  disabled={isWishlistLoading}
+                  className={cn(
+                    "w-14 shrink-0 flex items-center justify-center rounded-2xl border-2 transition-all active:scale-95 group",
+                    isWishlisted 
+                      ? "border-rose-400 bg-rose-50 text-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.15)]" 
+                      : "border-slate-200 bg-white text-slate-400 hover:border-rose-200 hover:text-rose-400",
+                    isWishlistLoading && "opacity-50 cursor-not-allowed"
+                  )}
+                  title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+                >
+                  {isWishlistLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Heart className={cn("w-6 h-6 transition-all duration-300", isWishlisted ? "fill-current scale-110" : "group-hover:scale-110")} />
+                  )}
+                </button>
+
                 <button 
                   onClick={handleAddToCart}
                   disabled={product.stock === 0 || isCartLoading}
@@ -267,6 +308,7 @@ export default function ProductDetail() {
                   {isCartLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <ShoppingCart className="w-5 h-5" />} 
                   {isCartLoading ? 'ADDING...' : 'CART'}
                 </button>
+                
                 <button 
                   disabled={product.stock === 0 || isCartLoading}
                   className="flex-1 py-4 rounded-2xl bg-cyan-500 text-white font-mono font-bold text-sm tracking-widest flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(34,211,238,0.4)] hover:bg-cyan-400 hover:shadow-[0_4px_25px_rgba(34,211,238,0.6)] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"

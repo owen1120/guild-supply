@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { 
   Diamond, 
   ChartColumn, 
@@ -13,6 +14,8 @@ import type { Product } from '../types/inventory';
 import type { Article } from '../types/library';
 
 export default function Home() {
+  const navigate = useNavigate();
+
   const [isStarted, setIsStarted] = useState(false);
   const [countdown, setCountdown] = useState(5);
   const showIntro = !isStarted && countdown > 0;
@@ -139,7 +142,10 @@ export default function Home() {
 
       <div className="flex h-full w-full p-8 gap-6">
          
-         <div className="h-full aspect-square rounded-3xl glass-panel outline-lg flex flex-col items-center justify-center shrink-0 group hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] transition-all duration-500 overflow-hidden relative cursor-pointer">
+         <div 
+           onClick={() => heroProduct && navigate(`/product/${heroProduct.id}`)}
+           className="h-full aspect-square rounded-3xl glass-panel outline-lg flex flex-col items-center justify-center shrink-0 group hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] transition-all duration-500 overflow-hidden relative cursor-pointer"
+         >
              {isLoading ? (
                 <Loader2 className="w-8 h-8 text-cyan-500 animate-spin opacity-50" />
              ) : heroProduct ? (
@@ -181,6 +187,7 @@ export default function Home() {
                     topPicks.slice(0, topPickLimit).map((product) => (
                       <div 
                         key={product.id} 
+                        onClick={() => navigate(`/product/${product.id}`)}
                         className="w-full aspect-square rounded-2xl glass-panel outline-lg flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] overflow-hidden relative cursor-pointer group"
                       >
                           <img 
