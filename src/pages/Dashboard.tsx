@@ -1,11 +1,9 @@
-// src/pages/Dashboard.tsx
 import { useState, useEffect } from 'react';
 import { 
   Swords, Shield, HelpCircle, 
   MapPin, ShoppingBag, CreditCard, MessageCircle, ChevronRight, Loader2, Globe, RefreshCcw, Star, UserCircle
 } from 'lucide-react';
 import { useProfileStore } from '../features/profile/store/useProfileStore';
-// 💎 1. 引入我們剛寫好的超強物流座標元件
 import AddressBook from '../features/profile/components/AddressBook';
 
 type DashboardView = 'overview' | 'address' | 'orders' | 'profile-edit' | 'rank-info' | 'credits';
@@ -271,7 +269,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* 💎 視圖：物流座標 (Address Book) - 正式替換成我們剛剛寫好的元件！ */}
+        {/* 視圖：物流座標 (Address Book) */}
         {activeView === 'address' && (
           <div className="h-full w-full min-h-0 relative animate-in fade-in slide-in-from-right-8 duration-500">
             <AddressBook />
