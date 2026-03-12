@@ -5,6 +5,8 @@ import {
 } from 'lucide-react';
 import { useProfileStore } from '../features/profile/store/useProfileStore';
 import AddressBook from '../features/profile/components/AddressBook';
+import { useOrderStore } from '../features/orders/store/useOrderStore';
+import OrderHistory from '../features/orders/components/OrderHistory';
 
 type DashboardView = 'overview' | 'address' | 'orders' | 'profile-edit' | 'rank-info' | 'credits';
 
@@ -12,10 +14,17 @@ export default function Dashboard() {
   const { profile, isLoading, fetchProfile, fetchAddresses } = useProfileStore();
   const [activeView, setActiveView] = useState<DashboardView>('overview');
 
+  const { orders, fetchOrders } = useOrderStore();
+
   useEffect(() => {
     fetchProfile();
     fetchAddresses();
-  }, [fetchProfile, fetchAddresses]);
+    fetchOrders(); 
+  }, [fetchProfile, fetchAddresses, fetchOrders]);
+
+  const activeOrdersCount = orders.filter(
+    o => !['COMPLETED', 'CANCELLED'].includes(o.status.toUpperCase())
+  ).length;
 
   if (isLoading && !profile) {
     return (
@@ -29,7 +38,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col h-full w-full min-h-0 px-[clamp(16px,2vw,32px)] pb-[clamp(16px,2vh,32px)] overflow-hidden">
       
-      {/* 🌟 上半部：英雄執照 (Hero's License) */}
+      {/* 上半部：英雄執照 (Hero's License) */}
       <div className="shrink-0 flex flex-col gap-[clamp(8px,1.5vh,24px)] pt-[clamp(8px,1vh,16px)] mb-[clamp(12px,2vh,32px)]">
         
         <div className="text-center pb-[clamp(4px,1vh,16px)] pt-[clamp(4px,1vh,8px)] relative">
@@ -78,7 +87,9 @@ export default function Dashboard() {
             className="glass-panel p-[clamp(12px,2vh,24px)] rounded-[clamp(16px,2vh,32px)] flex flex-col justify-center border border-white/60 shadow-sm hover:shadow-cyan-500/10 hover:border-cyan-200 cursor-pointer transform hover:-translate-y-1 transition-all duration-300 group"
           >
             <p className="font-mono text-[clamp(9px,1.1vh,12px)] text-slate-500 font-bold uppercase tracking-widest mb-[clamp(4px,0.5vh,8px)]">Active</p>
-            <h3 className="font-sans text-[clamp(24px,3vh,36px)] font-bold text-slate-800 leading-none group-hover:text-cyan-600 transition-colors">3</h3>
+            <h3 className="font-sans text-[clamp(24px,3vh,36px)] font-bold text-slate-800 leading-none group-hover:text-cyan-600 transition-colors">
+              {activeOrdersCount}
+            </h3>
           </div>
 
           <div 
@@ -97,10 +108,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* 🧩 下半部：動態內容區塊 */}
       <div className="flex-1 min-h-0 relative">
         
-        {/* === 視圖 A：總覽便當盒 (Overview Grid) === */}
         {activeView === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-[clamp(12px,2vh,24px)] h-full animate-in fade-in slide-in-from-bottom-4 duration-500">
             
@@ -229,10 +238,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* ======================================================= */}
-        {/* 🛠️ 其他預備施工大廳 & 💎 替換上場的 AddressBook 元件         */}
-        {/* ======================================================= */}
-
         {/* 視圖：編輯個人資料 (Profile Edit) */}
         {activeView === 'profile-edit' && (
           <div className="glass-panel p-8 rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm h-full flex flex-col items-center justify-center animate-in fade-in slide-in-from-right-8 duration-500 min-h-0">
@@ -251,12 +256,9 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* 視圖：進行中的訂單 (Orders) */}
         {activeView === 'orders' && (
-          <div className="glass-panel p-8 rounded-[clamp(16px,2vh,32px)] border border-white/60 shadow-sm h-full flex flex-col items-center justify-center animate-in fade-in slide-in-from-right-8 duration-500 min-h-0">
-            <ShoppingBag className="w-12 h-12 text-cyan-500 mb-4 animate-bounce shrink-0" />
-            <h2 className="text-[clamp(20px,2.5vh,28px)] font-serif font-bold text-slate-800 mb-2 shrink-0">Active Orders & Returns</h2>
-            <p className="font-mono text-[clamp(12px,1.4vh,14px)] text-slate-500 mb-6 shrink-0">Tracking your ongoing logistics...</p>
+          <div className="h-full w-full min-h-0 relative animate-in fade-in slide-in-from-right-8 duration-500">
+            <OrderHistory />
           </div>
         )}
 
