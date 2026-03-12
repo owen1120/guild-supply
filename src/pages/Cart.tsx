@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Backpack, Trash2, Diamond, ShieldAlert, Loader2, ArrowRight } from 'lucide-react';
 import { useCartStore } from '../features/cart/store/useCartStore';
 
 export default function Cart() {
+  const navigate = useNavigate();
   const { items, totalAmount, isLoading, fetchCart, updateQuantity, removeItem, clearCart } = useCartStore();
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export default function Cart() {
                 <h3 className="text-lg font-sans font-bold text-slate-800 truncate mb-1">{item.title}</h3>
                 {item.options && Object.entries(item.options).map(([key, value]) => (
                   <p key={key} className="font-mono text-xs text-slate-500 mb-2">
-                    {key}: <span className="text-cyan-700">{value}</span>
+                    {key}: <span className="text-cyan-700">{value as string}</span>
                   </p>
                 ))}
                 
@@ -131,7 +133,7 @@ export default function Cart() {
           <div className="flex flex-col gap-3 mt-4">
             <button 
               className="w-full py-4 rounded-2xl bg-cyan-500 text-white font-mono font-bold text-sm tracking-widest flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(34,211,238,0.4)] hover:bg-cyan-400 hover:shadow-[0_4px_25px_rgba(34,211,238,0.6)] active:scale-95 transition-all"
-              onClick={() => alert("We will build the Checkout API magic in the next adventure!")}
+              onClick={() => navigate('/checkout')}
             >
               PROCEED TO CHECKOUT <ArrowRight className="w-5 h-5" />
             </button>

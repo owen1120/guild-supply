@@ -6,6 +6,7 @@ import Inventory from './pages/Inventory';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Dashboard from './pages/Dashboard';
+import Checkout from './pages/Checkout';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 function App() {
@@ -24,6 +25,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/checkout" 
+            element={
+              <ProtectedRoute>
+                <Checkout />
               </ProtectedRoute>
             } 
           />
