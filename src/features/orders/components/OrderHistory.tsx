@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
-import { Package, Clock, CheckCircle2, Truck, Diamond, Loader2, XCircle } from 'lucide-react';
+import { Package, Clock, CheckCircle2, Truck, Diamond, XCircle } from 'lucide-react';
 import { useOrderStore } from '../store/useOrderStore';
 import { cn } from '../../../utils/cn';
+import { Skeleton } from '../../../components/ui/Skeleton';
+
+interface OrderHistoryProps {
+  onOrderClick?: (orderId: string) => void;
+}
 
 const getStatusConfig = (status: string) => {
   switch (status.toUpperCase()) {
@@ -20,24 +25,38 @@ const getStatusConfig = (status: string) => {
   }
 };
 
-export default function OrderHistory() {
+export default function OrderHistory({ onOrderClick }: OrderHistoryProps) {
   const { orders, isLoading, fetchOrders } = useOrderStore();
 
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
 
-  // 載入中畫面
   if (isLoading && orders.length === 0) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center h-full min-h-0">
-        <Loader2 className="w-10 h-10 animate-spin text-cyan-500 mb-4" />
-        <p className="font-mono text-slate-500 tracking-widest animate-pulse">Retrieving guild contracts...</p>
+      <div className="flex flex-col gap-4 h-full overflow-y-auto custom-scrollbar pr-2 pb-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="glass-panel p-6 rounded-3xl border border-white/60 flex flex-col gap-4">
+            <div className="flex justify-between items-center">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-6 w-28 rounded-full" />
+            </div>
+            <div className="flex items-end justify-between mt-2">
+              <div>
+                <Skeleton className="h-6 w-32 mb-2" />
+                <Skeleton className="h-3 w-40" />
+              </div>
+              <div className="flex flex-col items-end gap-1">
+                <Skeleton className="h-3 w-16 mb-1" />
+                <Skeleton className="h-6 w-20" />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
 
-  // 空狀態畫面 (沒有訂單時)
   if (orders.length === 0) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center h-full min-h-0 text-slate-400">
@@ -50,14 +69,12 @@ export default function OrderHistory() {
     );
   }
 
-  // 訂單列表展示
   return (
     <div className="flex flex-col gap-4 h-full overflow-y-auto custom-scrollbar pr-2 pb-4">
       {orders.map((order) => {
         const statusConfig = getStatusConfig(order.status);
         const StatusIcon = statusConfig.icon;
         
-        // 日期格式化處理
         const dateObj = new Date(order.createdAt);
         const formattedDate = isNaN(dateObj.getTime()) 
           ? order.createdAt 
@@ -66,9 +83,9 @@ export default function OrderHistory() {
         return (
           <div 
             key={order.id} 
-            className="glass-panel p-6 rounded-3xl border border-white/60 hover:shadow-md hover:border-cyan-200 transition-all duration-300 flex flex-col gap-4 group"
+            onClick={() => onOrderClick?.(order.id)}
+            className="glass-panel p-6 rounded-3xl border border-white/60 hover:shadow-md hover:border-cyan-200 transition-all duration-300 flex flex-col gap-4 group cursor-pointer"
           >
-            {/* 上半部：日期 & 狀態標籤 */}
             <div className="flex justify-between items-center">
               <span className="font-mono text-sm text-slate-500">{formattedDate}</span>
               <div className={cn(
@@ -81,7 +98,6 @@ export default function OrderHistory() {
               </div>
             </div>
 
-            {/* 下半部：訂單編號、項目數量 & 總金額 */}
             <div className="flex items-end justify-between">
               <div>
                 <h3 className="font-serif font-bold text-lg text-slate-800 flex items-center gap-2 group-hover:text-cyan-700 transition-colors">

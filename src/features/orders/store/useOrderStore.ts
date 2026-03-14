@@ -6,17 +6,22 @@ interface OrderState {
   isLoading: boolean;
   error: string | null;
   
-  // 獲取所有訂單
-  fetchOrders: () => Promise<void>;
+  currentOrder: Order | null;
+  isDetailLoading: boolean;
   
-  // 清除本地訂單紀錄
+  fetchOrders: () => Promise<void>;
+  fetchOrderById: (id: string) => Promise<void>;
   clearLocalOrders: () => void;
+  clearCurrentOrder: () => void; 
 }
 
 export const useOrderStore = create<OrderState>((set) => ({
   orders: [],
   isLoading: false,
   error: null,
+  
+  currentOrder: null,
+  isDetailLoading: false,
 
   fetchOrders: async () => {
     set({ isLoading: true, error: null });
@@ -32,7 +37,24 @@ export const useOrderStore = create<OrderState>((set) => ({
     }
   },
 
+  fetchOrderById: async (id: string) => {
+    set({ isDetailLoading: true, error: null });
+    try {
+      const data = await orderService.getOrderById(id);
+      set({ currentOrder: data });
+    } catch (error) {
+      console.error(`Failed to fetch order ${id}:`, error);
+      set({ error: error instanceof Error ? error.message : 'Failed to fetch order details' });
+    } finally {
+      set({ isDetailLoading: false });
+    }
+  },
+
   clearLocalOrders: () => {
-    set({ orders: [], error: null });
+    set({ orders: [], currentOrder: null, error: null });
+  },
+
+  clearCurrentOrder: () => {
+    set({ currentOrder: null, error: null });
   }
 }));

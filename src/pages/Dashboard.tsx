@@ -7,12 +7,15 @@ import { useProfileStore } from '../features/profile/store/useProfileStore';
 import AddressBook from '../features/profile/components/AddressBook';
 import { useOrderStore } from '../features/orders/store/useOrderStore';
 import OrderHistory from '../features/orders/components/OrderHistory';
+import OrderDetail from '../features/orders/components/OrderDetail';
 
-type DashboardView = 'overview' | 'address' | 'orders' | 'profile-edit' | 'rank-info' | 'credits';
+type DashboardView = 'overview' | 'address' | 'orders' | 'order-detail' | 'profile-edit' | 'rank-info' | 'credits';
 
 export default function Dashboard() {
   const { profile, isLoading, fetchProfile, fetchAddresses } = useProfileStore();
   const [activeView, setActiveView] = useState<DashboardView>('overview');
+  
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
   const { orders, fetchOrders } = useOrderStore();
 
@@ -26,6 +29,11 @@ export default function Dashboard() {
     o => !['COMPLETED', 'CANCELLED'].includes(o.status.toUpperCase())
   ).length;
 
+  const handleViewOrderDetail = (orderId: string) => {
+    setSelectedOrderId(orderId);
+    setActiveView('order-detail');
+  };
+
   if (isLoading && !profile) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center h-full min-h-0">
@@ -38,7 +46,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col h-full w-full min-h-0 px-[clamp(16px,2vw,32px)] pb-[clamp(16px,2vh,32px)] overflow-hidden">
       
-      {/* 上半部：英雄執照 (Hero's License) */}
+      {/* 🌟 上半部：英雄執照 (Hero's License) */}
       <div className="shrink-0 flex flex-col gap-[clamp(8px,1.5vh,24px)] pt-[clamp(8px,1vh,16px)] mb-[clamp(12px,2vh,32px)]">
         
         <div className="text-center pb-[clamp(4px,1vh,16px)] pt-[clamp(4px,1vh,8px)] relative">
@@ -108,8 +116,10 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* 🧩 下半部：動態內容區塊 */}
       <div className="flex-1 min-h-0 relative">
         
+        {/* === 視圖 A：總覽便當盒 (Overview Grid) === */}
         {activeView === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-[clamp(12px,2vh,24px)] h-full animate-in fade-in slide-in-from-bottom-4 duration-500">
             
@@ -256,9 +266,19 @@ export default function Dashboard() {
           </div>
         )}
 
+        {/* 視圖：進行中的訂單 (Orders) */}
         {activeView === 'orders' && (
           <div className="h-full w-full min-h-0 relative animate-in fade-in slide-in-from-right-8 duration-500">
-            <OrderHistory />
+            <OrderHistory onOrderClick={handleViewOrderDetail} />
+          </div>
+        )}
+
+        {activeView === 'order-detail' && selectedOrderId && (
+          <div className="h-full w-full min-h-0 relative animate-in fade-in slide-in-from-right-8 duration-500">
+            <OrderDetail 
+              orderId={selectedOrderId} 
+              onBack={() => setActiveView('orders')} 
+            />
           </div>
         )}
 
