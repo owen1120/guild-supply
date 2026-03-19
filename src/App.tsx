@@ -7,6 +7,7 @@ import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Dashboard from './pages/Dashboard';
 import Checkout from './pages/Checkout';
+import Quest from './pages/Quest';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 function App() {
@@ -34,6 +35,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Checkout />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/quests" 
+            element={
+              <ProtectedRoute>
+                <Quest />
               </ProtectedRoute>
             } 
           />
