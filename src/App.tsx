@@ -8,6 +8,7 @@ import Cart from './pages/Cart';
 import Dashboard from './pages/Dashboard';
 import Checkout from './pages/Checkout';
 import Quest from './pages/Quest';
+import Notices from './pages/Notices';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 function App() {
@@ -44,6 +45,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Quest />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/notices" 
+            element={
+              <ProtectedRoute>
+                <Notices />
               </ProtectedRoute>
             } 
           />
