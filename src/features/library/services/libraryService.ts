@@ -101,6 +101,20 @@ export const libraryService = {
     return result.data || result;
   },
 
+  async getLatestScrolls(limit: number = 3): Promise<Article[]> {
+    const response = await fetch(`${API_URL}/library/scrolls`, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error('Failed to fetch latest scrolls');
+    const result = await response.json();
+    const scrolls: Article[] = result.data || result;
+    
+    return scrolls
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, limit);
+  },
+
   async getScrollById(id: string): Promise<Article> {
     const response = await fetch(`${API_URL}/library/scrolls/${id}`, {
       method: 'GET',
