@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+// src/features/library/components/ScrollDrawer.tsx
+import { useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Clock, Flame, AlertTriangle, CheckCircle2, User } from 'lucide-react';
 import { useLibraryStore } from '../store/useLibraryStore';
 import { Skeleton } from '../../../components/ui/Skeleton';
@@ -14,8 +16,88 @@ export default function ScrollDrawer({ scrollId, onClose }: ScrollDrawerProps) {
 
   useEffect(() => {
     fetchScrollById(scrollId);
-    return () => clearCurrentScroll();
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      clearCurrentScroll();
+      document.body.style.overflow = 'unset';
+    };
   }, [scrollId, fetchScrollById, clearCurrentScroll]);
+
+  // 💎 終極翻譯蒟蒻：徹底消滅 any，並確保所有變數都有被使用
+  const safeData = useMemo(() => {
+    if (!currentScroll) return null;
+    
+    // 嚴格型別轉換，取代 any
+    const raw = currentScroll as unknown as Record<string, unknown>;
+    
+    // 破解巢狀口袋並給予嚴格型別
+    const headerInfo = (raw.header_info || raw.headerInfo || {}) as Record<string, unknown>;
+    const rpg = (raw.rpg_metadata || raw.rpgMetadata || {}) as Record<string, unknown>;
+    const author = (headerInfo.author || raw.authorInfo || raw.author_info || {}) as Record<string, unknown>;
+
+    // 刪除了沒用到的 social 變數，迎合結界規則！
+
+    return {
+      title: (headerInfo.title || raw.title || 'Untitled Scroll') as string,
+      subtitle: (headerInfo.subtitle || raw.subtitle) as string | undefined,
+      category: (headerInfo.category || raw.category || 'CATEGORY') as string,
+      
+      // 內文區塊
+      contentBody: raw.content_body || raw.contentBody,
+      
+      // 作者資訊
+      authorInfo: {
+        name: author.name as string | undefined,
+        avatarUrl: (author.avatar_url || author.avatarUrl) as string | undefined,
+        title: (author.rank_title || author.title) as string | undefined
+      },
+      
+      // RPG 資訊
+      rpgMetadata: {
+        readTimeMinutes: (rpg.quest_time_minutes || rpg.readTimeMinutes) as number | undefined,
+        difficulty: (rpg.difficulty_level || rpg.difficulty) as string | undefined,
+        tags: rpg.tags as string[] | undefined
+      },
+      
+      // 日期
+      createdAt: (raw.created_at || raw.createdAt) as string | undefined
+    };
+  }, [currentScroll]);
+
+  const safeBlocks: ContentBlock[] = useMemo(() => {
+    if (!safeData?.contentBody) return [];
+
+    const rawBody = safeData.contentBody;
+
+    if (Array.isArray(rawBody)) {
+      return rawBody as ContentBlock[];
+    }
+
+    if (typeof rawBody === 'string') {
+      try {
+        const parsed = JSON.parse(rawBody);
+        if (Array.isArray(parsed)) return parsed;
+        if (parsed && Array.isArray(parsed.blocks)) return parsed.blocks;
+        if (parsed && typeof parsed.type === 'string') return [parsed];
+      } catch (error) {
+        console.error('🚨 [Omni-Parser] JSON 字串解析失敗！', error);
+        return [];
+      }
+    }
+
+    if (typeof rawBody === 'object' && rawBody !== null) {
+      const objBody = rawBody as Record<string, unknown>;
+      if (Array.isArray(objBody.blocks)) return objBody.blocks as ContentBlock[];
+      if (typeof objBody.type === 'string') return [objBody as unknown as ContentBlock];
+      const values = Object.values(objBody);
+      if (values.length > 0 && typeof (values[0] as Record<string, unknown>)?.type === 'string') {
+        return values as ContentBlock[];
+      }
+    }
+
+    return [];
+  }, [safeData]);
 
   const renderBlock = (block: ContentBlock, index: number) => {
     switch (block.type) {
@@ -68,18 +150,19 @@ export default function ScrollDrawer({ scrollId, onClose }: ScrollDrawerProps) {
           </div>
         );
       default:
-        return null; 
+        console.warn(`⚠️ 未知的 Block 類型: ${(block as Record<string, unknown>)?.type}`);
+        return null;
     }
   };
 
-  return (
+  return createPortal(
     <>
       <div 
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 animate-in fade-in duration-300"
+        className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-100 animate-in fade-in duration-300"
         onClick={onClose}
       />
       
-      <div className="fixed top-0 right-0 w-full max-w-2xl h-full bg-white shadow-2xl z-50 overflow-y-auto flex flex-col animate-in slide-in-from-right duration-500 custom-scrollbar">
+      <div className="fixed top-0 right-0 w-full max-w-2xl h-full bg-white shadow-2xl z-101 overflow-y-auto flex flex-col animate-in slide-in-from-right duration-500 custom-scrollbar">
         
         <div className="sticky top-0 z-20 flex justify-between items-center p-4 bg-white/80 backdrop-blur-md border-b border-slate-100">
           <button 
@@ -94,9 +177,8 @@ export default function ScrollDrawer({ scrollId, onClose }: ScrollDrawerProps) {
           <div className="w-10 h-10" /> 
         </div>
 
-        {/* 內容區域 */}
         <div className="flex-1 p-6 md:p-12">
-          {isDetailLoading || !currentScroll ? (
+          {isDetailLoading ? (
             <div className="flex flex-col gap-6 animate-pulse">
               <Skeleton className="w-24 h-6 rounded-full" />
               <Skeleton className="w-full h-12" />
@@ -107,46 +189,57 @@ export default function ScrollDrawer({ scrollId, onClose }: ScrollDrawerProps) {
               <Skeleton className="w-full h-64 rounded-3xl mt-6" />
               <Skeleton className="w-full h-32 rounded-2xl mt-6" />
             </div>
+          ) : !safeData ? (
+            <div className="text-center py-20 text-slate-500">
+              <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+              <h2 className="text-xl font-bold mb-2">無法解開卷軸</h2>
+              <p>找不到該文章的詳細內容，可能是 API 呼叫失敗或文章已損毀。</p>
+            </div>
           ) : (
             <div className="animate-in fade-in duration-500">
               
-              {/* 文章標頭 */}
               <div className="mb-6">
                 <span className="inline-block px-3 py-1 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-full font-mono text-[10px] font-bold tracking-widest uppercase mb-4">
-                  {currentScroll.category}
+                  {safeData.category}
                 </span>
+                
                 <h1 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 leading-tight mb-4">
-                  {currentScroll.title}
+                  {safeData.title}
                 </h1>
-                {currentScroll.subtitle && (
+                
+                {safeData.subtitle && (
                   <p className="text-lg text-slate-600 font-medium mb-6">
-                    {currentScroll.subtitle}
+                    {safeData.subtitle}
                   </p>
                 )}
               </div>
 
-              {/* 文章元資料 (Metadata) */}
               <div className="flex flex-wrap items-center gap-4 py-4 border-y border-slate-100 mb-10 font-mono text-xs text-slate-500">
                 <div className="flex items-center gap-2">
-                  {currentScroll.authorInfo?.avatarUrl ? (
-                    <img src={currentScroll.authorInfo.avatarUrl} alt="Author" className="w-6 h-6 rounded-full object-cover" />
+                  {safeData.authorInfo.avatarUrl ? (
+                    <img src={safeData.authorInfo.avatarUrl} alt="Author" className="w-6 h-6 rounded-full object-cover" />
                   ) : (
                     <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center"><User className="w-3 h-3 text-slate-500" /></div>
                   )}
-                  <span className="font-bold text-slate-700">{currentScroll.authorInfo?.name || 'Guild Scribe'}</span>
+                  <span className="font-bold text-slate-700">{safeData.authorInfo.name || 'Guild Scribe'}</span>
                 </div>
                 <span className="w-1 h-1 rounded-full bg-slate-300" />
-                <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {new Date(currentScroll.createdAt).toLocaleDateString()}</span>
+                <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {safeData.createdAt ? new Date(safeData.createdAt).toLocaleDateString() : 'Unknown Date'}</span>
                 <span className="w-1 h-1 rounded-full bg-slate-300" />
-                <span className="flex items-center gap-1.5 text-emerald-600 font-bold"><Flame className="w-3.5 h-3.5" /> {currentScroll.rpgMetadata?.readTimeMinutes || 5} min read</span>
+                <span className="flex items-center gap-1.5 text-emerald-600 font-bold"><Flame className="w-3.5 h-3.5" /> {safeData.rpgMetadata.readTimeMinutes || 5} min read</span>
               </div>
 
-              {/* 動態渲染每一個內容區塊 */}
               <div className="flex flex-col">
-                {currentScroll.contentBody?.map((block, index) => renderBlock(block, index))}
+                {safeBlocks.length > 0 ? (
+                  safeBlocks.map((block, index) => renderBlock(block, index))
+                ) : (
+                  <div className="p-8 text-center text-slate-400 bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                    <AlertTriangle className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                    內容正在撰寫中，或是格式無法解析...
+                  </div>
+                )}
               </div>
 
-              {/* 卷軸結尾標記 */}
               <div className="mt-16 pt-8 border-t border-slate-100 flex flex-col items-center justify-center text-slate-400 gap-2 pb-12">
                 <div className="w-2 h-2 rounded-full bg-emerald-300" />
                 <span className="font-mono text-[10px] tracking-widest uppercase">End of Scroll</span>
@@ -156,6 +249,7 @@ export default function ScrollDrawer({ scrollId, onClose }: ScrollDrawerProps) {
           )}
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }

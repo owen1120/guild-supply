@@ -1,3 +1,4 @@
+// src/pages/Notices.tsx
 import { useState, useEffect } from 'react';
 import { 
   BookOpen, Clock, Eye, Heart, Bookmark, 
@@ -56,7 +57,7 @@ export default function Notices() {
   return (
     <div className="flex flex-col h-full w-full min-h-0 px-[clamp(16px,2vw,32px)] pb-[clamp(16px,2vh,32px)] overflow-hidden animate-in fade-in duration-500 relative">
       
-      {/* --- 標題區 --- */}
+      {/* 標題區 */}
       <div className="shrink-0 pt-[clamp(8px,1vh,16px)] mb-8">
         <div className="flex items-center gap-4 mb-2">
           <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center border border-emerald-100 shadow-sm relative overflow-hidden">
@@ -73,7 +74,7 @@ export default function Notices() {
         </div>
       </div>
 
-      {/* --- 分類頁籤區 (Tabs) --- */}
+      {/* 分類頁籤區 */}
       <div className="flex gap-2 mb-8 overflow-x-auto custom-scrollbar pb-2 shrink-0">
         <button
           onClick={() => setActiveCategory('ALL')}
@@ -90,7 +91,7 @@ export default function Notices() {
         
         {categories.map(category => (
           <button
-            key={category.key}
+            key={category.key || category.label}
             onClick={() => setActiveCategory(category.key)}
             className={cn(
               "flex items-center gap-2 px-6 py-2.5 rounded-full font-mono text-sm font-bold transition-all border whitespace-nowrap",
@@ -104,7 +105,7 @@ export default function Notices() {
         ))}
       </div>
 
-      {/* --- 文章列表區 --- */}
+      {/* 文章列表區 */}
       {filteredScrolls.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center bg-slate-50/50 rounded-4xl border border-slate-200/50 border-dashed">
           <Library className="w-16 h-16 text-slate-300 mb-4" />
@@ -113,27 +114,65 @@ export default function Notices() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 overflow-y-auto custom-scrollbar pr-2 pb-12 auto-rows-max content-start">
-          {filteredScrolls.map(scroll => {
-            const isBookmarked = bookmarks.some(b => b.articleId === scroll.id);
-            const readTime = scroll.rpgMetadata?.readTimeMinutes || 5;
+          {filteredScrolls.map((scroll, index) => {
+            const raw = scroll as unknown as Record<string, unknown>;
             
-            const dateObj = new Date(scroll.createdAt);
+            const hInfo = (raw.header_info || raw.headerInfo || {}) as Record<string, unknown>;
+            const sEng = (raw.social_engagement || raw.socialEngagement || raw.social || {}) as Record<string, unknown>;
+            const rMeta = (raw.rpg_metadata || raw.rpgMetadata || {}) as Record<string, unknown>;
+
+            const targetId = (typeof raw.guide_id === 'string' ? raw.guide_id : undefined)
+                          || (typeof raw.id === 'string' ? raw.id : undefined) 
+                          || (typeof raw.slug === 'string' ? raw.slug : undefined);
+            
+            const uiCover = (hInfo.cover_image_url || hInfo.cover_image || raw.cover_image_url || raw.cover_image || raw.coverImage) as string | undefined;
+            
+            const uiTitle = (hInfo.title || raw.title || 'Untitled Scroll') as string;
+            const uiSubtitle = (hInfo.subtitle || raw.subtitle) as string | undefined;
+            const uiCategory = (hInfo.category || raw.category || 'CATEGORY') as string;
+
+            let rawAuth = hInfo.author || raw.authorInfo || raw.author_info || raw.author;
+            
+            if (typeof rawAuth === 'string') {
+              try {
+                rawAuth = JSON.parse(rawAuth);
+              } catch (error) { // 💎 修正：將 e 改為 error，並且在下面確實使用它！
+                console.warn('🚨 作者欄位解碼失敗:', rawAuth, error);
+                rawAuth = {};
+              }
+            }
+            
+            const auth = (rawAuth || {}) as Record<string, unknown>;
+            const authName = (auth.name || raw.author_name || 'Guild Scribe') as string;
+            const authAvatar = (auth.avatar_url || auth.avatarUrl || raw.author_avatar) as string | undefined;
+
+            const uiViews = (sEng.views_count || sEng.views || raw.views_count || raw.views || 0) as number;
+            const uiLikes = (sEng.mana_likes || sEng.likes || raw.mana_likes || raw.likes || 0) as number;
+            const uiReadTime = (rMeta.quest_time_minutes || rMeta.readTimeMinutes || raw.quest_time_minutes || raw.readTimeMinutes || 5) as number;
+
+            const rawDate = (raw.published_at || raw.created_at || raw.createdAt) as string | undefined;
+            const dateObj = rawDate ? new Date(rawDate) : new Date();
             const formattedDate = isNaN(dateObj.getTime()) 
-              ? scroll.createdAt 
+              ? 'Unknown Date' 
               : new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(dateObj);
+
+            const isBookmarked = targetId ? bookmarks.some(b => b.articleId === targetId) : false;
 
             return (
               <div 
-                key={scroll.id} 
-                onClick={() => setSelectedScrollId(scroll.id)}
+                key={targetId || `fallback-key-${index}`} 
+                onClick={() => {
+                  if (targetId) setSelectedScrollId(targetId);
+                  else console.error('無法開啟 Drawer，這篇文章的 ID 無效！');
+                }}
                 className="glass-panel group cursor-pointer rounded-4xl border border-white/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden bg-white/40"
               >
                 {/* 封面圖區塊 */}
                 <div className="relative w-full h-52 bg-slate-100 overflow-hidden shrink-0">
-                  {scroll.coverImage ? (
+                  {uiCover ? (
                     <img 
-                      src={scroll.coverImage} 
-                      alt={scroll.title} 
+                      src={uiCover} 
+                      alt={uiTitle} 
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/f8fafc/94a3b8?text=Archive'; }}
                     />
@@ -145,11 +184,10 @@ export default function Notices() {
                   
                   <div className="absolute inset-0 bg-linear-to-t from-slate-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  {/* 收藏按鈕 */}
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleBookmark(scroll.id);
+                      if (targetId) toggleBookmark(targetId);
                     }}
                     className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-sm flex items-center justify-center hover:bg-white hover:scale-110 transition-all z-10"
                   >
@@ -157,7 +195,7 @@ export default function Notices() {
                   </button>
 
                   <div className="absolute bottom-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-lg font-mono text-[10px] font-bold tracking-widest uppercase text-slate-800 shadow-sm">
-                    {scroll.category}
+                    {uiCategory}
                   </div>
                 </div>
 
@@ -166,39 +204,38 @@ export default function Notices() {
                   <div className="flex items-center gap-3 font-mono text-xs text-slate-500 mb-3">
                     <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {formattedDate}</span>
                     <span className="w-1 h-1 rounded-full bg-slate-300" />
-                    <span className="flex items-center gap-1 text-emerald-600 font-bold"><Flame className="w-3.5 h-3.5" /> {readTime} min read</span>
+                    <span className="flex items-center gap-1 text-emerald-600 font-bold"><Flame className="w-3.5 h-3.5" /> {uiReadTime} min read</span>
                   </div>
                   
                   <h3 className="text-xl font-serif font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-emerald-700 transition-colors">
-                    {scroll.title}
+                    {uiTitle}
                   </h3>
                   
-                  {scroll.subtitle && (
+                  {uiSubtitle && (
                     <p className="text-sm text-slate-600 line-clamp-2 mb-6 flex-1">
-                      {scroll.subtitle}
+                      {uiSubtitle}
                     </p>
                   )}
 
-                  {/* 卡片底部狀態 */}
                   <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-slate-200 overflow-hidden">
-                        {scroll.authorInfo?.avatarUrl ? (
-                          <img src={scroll.authorInfo.avatarUrl} alt="author" className="w-full h-full object-cover" />
+                        {authAvatar ? (
+                          <img src={authAvatar} alt="author" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-[10px]">
-                            {scroll.authorInfo?.name?.charAt(0) || 'G'}
+                            {authName.charAt(0)}
                           </div>
                         )}
                       </div>
                       <span className="font-mono text-xs text-slate-600 font-bold truncate max-w-25">
-                        {scroll.authorInfo?.name || 'Guild Scribe'}
+                        {authName}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-3 font-mono text-xs text-slate-400">
-                      <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5" /> {scroll.views}</span>
-                      <span className="flex items-center gap-1"><Heart className="w-3.5 h-3.5" /> {scroll.likes}</span>
+                      <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5" /> {uiViews}</span>
+                      <span className="flex items-center gap-1"><Heart className="w-3.5 h-3.5" /> {uiLikes}</span>
                     </div>
                   </div>
                 </div>
@@ -208,7 +245,6 @@ export default function Notices() {
         </div>
       )}
 
-      {/* 閱讀抽屜召喚陣 */}
       {selectedScrollId && (
         <ScrollDrawer scrollId={selectedScrollId} onClose={() => setSelectedScrollId(null)} />
       )}

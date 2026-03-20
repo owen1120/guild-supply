@@ -1,3 +1,5 @@
+// src/features/library/services/libraryService.ts
+
 export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 export interface TextBlock {
@@ -121,7 +123,12 @@ export const libraryService = {
       headers: getAuthHeaders(),
     });
     if (!response.ok) throw new Error(`Failed to fetch scroll ${id}`);
+    
     const result = await response.json();
+    
+    // 💎 終極探測雷達：直接把後端回傳的原始包裹印出來！
+    console.log('📡 [API 回傳] 原始單一文章資料:', result);
+    
     return result.data || result;
   },
 
