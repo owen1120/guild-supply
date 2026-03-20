@@ -89,20 +89,32 @@ export default function Notices() {
           All Scrolls
         </button>
         
-        {categories.map(category => (
-          <button
-            key={category.key || category.label}
-            onClick={() => setActiveCategory(category.key)}
-            className={cn(
-              "flex items-center gap-2 px-6 py-2.5 rounded-full font-mono text-sm font-bold transition-all border whitespace-nowrap",
-              activeCategory === category.key
-                ? "bg-slate-900 text-white border-slate-900 shadow-md" 
-                : "bg-white text-slate-500 border-slate-200 hover:border-emerald-300 hover:text-emerald-600 hover:bg-emerald-50"
-            )}
-          >
-            {category.label}
-          </button>
-        ))}
+        {/* 動態渲染分類頁籤：完美相容純字串與物件，且無任何 any */}
+        {categories.map((categoryItem, index) => {
+          const isString = typeof categoryItem === 'string';
+          
+          // 透過 unknown 中介進行安全型別轉換
+          const catRecord = isString ? null : (categoryItem as unknown as Record<string, string>);
+          
+          const catKey = isString ? categoryItem : (catRecord?.key || `cat-${index}`);
+          const catLabel = isString ? categoryItem : (catRecord?.label || String(categoryItem));
+
+          return (
+            <button
+              key={catKey}
+              onClick={() => setActiveCategory(catKey)}
+              className={cn(
+                "flex items-center gap-2 px-6 py-2.5 rounded-full font-mono text-sm font-bold transition-all border whitespace-nowrap",
+                activeCategory === catKey
+                  ? "bg-slate-900 text-white border-slate-900 shadow-md" 
+                  : "bg-white text-slate-500 border-slate-200 hover:border-emerald-300 hover:text-emerald-600 hover:bg-emerald-50"
+              )}
+            >
+              {/* 將底線取代為空白，讓純大寫的字串看起來更像標籤 */}
+              {catLabel.replace(/_/g, ' ')}
+            </button>
+          );
+        })}
       </div>
 
       {/* 文章列表區 */}
@@ -136,7 +148,7 @@ export default function Notices() {
             if (typeof rawAuth === 'string') {
               try {
                 rawAuth = JSON.parse(rawAuth);
-              } catch (error) { // 💎 修正：將 e 改為 error，並且在下面確實使用它！
+              } catch (error) { 
                 console.warn('🚨 作者欄位解碼失敗:', rawAuth, error);
                 rawAuth = {};
               }
